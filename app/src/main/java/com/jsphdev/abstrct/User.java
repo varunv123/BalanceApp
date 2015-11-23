@@ -3,6 +3,8 @@ package com.jsphdev.abstrct;
 import com.jsphdev.entities.model.Calendar;
 import com.jsphdev.entities.model.Profile;
 
+import java.util.ArrayList;
+
 /**
  * Created by vikramn on 11/13/15.
  */
@@ -11,6 +13,7 @@ public abstract class User {
     protected int identifier;
     protected Profile profile;
     protected Calendar calendar;
+    static protected ArrayList<User> allUsers;
 
     public String getName() {
         return name;

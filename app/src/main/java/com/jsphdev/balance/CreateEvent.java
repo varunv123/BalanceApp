@@ -44,8 +44,6 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
 
                         try{
                             getEventDetails(v);
-                            //Yooooo
-                            //Yoooo2
                             //Toast to notify successful event creation
                             Toast.makeText(getApplicationContext(), "Event Created successful.",
                                     Toast.LENGTH_SHORT).show();

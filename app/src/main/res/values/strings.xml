@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Balance</string>
+    <string-array name="selectType">
+        <item>Student</item>
+        <item>Administration</item>
+    </string-array>
+    <string name="title_activity_maps_test">Map</string>
+
+    <string-array name="sections">
+        <item >Cricket Tournament</item>
+        <item >Football Tournament</item>
+        <item >1st Speaker Cross</item>
+        <item >Chess</item>
+        <item >Hockey Tournament</item>
+        <item >Swimming Tournament</item>
+    </string-array>
+
+
+</resources>

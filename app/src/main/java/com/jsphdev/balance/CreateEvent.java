@@ -24,11 +24,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jsphdev.abstrct.Event;
+import com.jsphdev.entities.model.DoubleEvent;
 import com.jsphdev.exception.InvalidInputException;
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class CreateEvent extends FragmentActivity implements OnMapReadyCallback {
 
@@ -62,9 +68,24 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
                         try {
                             getEventDetails(v);
                             //Toast to notify successful event creation
+
+                            //go to Profile page
+                            java.text.DateFormat format = new SimpleDateFormat("yyyy-MM-DD HH:mm", Locale.ENGLISH);
+                            Date startDate = null;
+                            Date endDate = null;
+                            try {
+                                startDate = format.parse("2013-03-02 10:10");
+                                endDate = format.parse("2013-04-03 11:11");
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            com.jsphdev.entities.model.Location location = new com.jsphdev.entities.model.Location(20.1,300.1);
+                            Event event = new DoubleEvent("testEvent3",4,startDate,endDate,location);
+                            com.jsphdev.entities.model.Calendar calendar = new com.jsphdev.entities.model.Calendar();
+                            System.out.println("Trying to regitser event");
+                            calendar.registerEvent(event,getApplicationContext());
                             Toast.makeText(getApplicationContext(), "Event Created successful.",
                                     Toast.LENGTH_SHORT).show();
-                            //go to Profile page
                             Intent intent = new Intent(v.getContext(), Profile.class);
                             startActivity(intent);
                         } catch (InvalidInputException e) {

@@ -15,7 +15,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jsphdev.abstrct.Event;
 import com.jsphdev.exception.InvalidInputException;
+import com.jsphdev.utils.CalendarUtils;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class SearchEvent extends FragmentActivity implements OnMapReadyCallback {
 
@@ -43,7 +48,15 @@ public class SearchEvent extends FragmentActivity implements OnMapReadyCallback 
                         try{
                             getSearchEventDetails(v);
                             //go to Profile page
+                            CalendarUtils calUtils = new CalendarUtils();
+                            //List<Event> searchResults = calUtils.getEventByDay();
+                            List<Event> searchResults = calUtils.getEventByName(getApplicationContext(),"testEvent2");
+                            //List<Event> searchResults = calUtils.getEventByDay();
+                            //List<Event> searchResults = calUtils.getEventByDay();
+                            //List<Event> searchResults = calUtils.getEventByDay();
                             Intent intent = new Intent(v.getContext(),SearchResults.class);
+                            System.out.println(searchResults.size());
+                            intent.putExtra("events",(Serializable) searchResults);
                             startActivity(intent);
                         }catch (InvalidInputException e) {
                             Log.e("CreateEventActivity", e.getMessage());

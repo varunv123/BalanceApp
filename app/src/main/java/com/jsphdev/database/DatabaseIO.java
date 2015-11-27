@@ -11,7 +11,12 @@ import java.util.List;
 
 import com.jsphdev.DBLayout.Event.CreateEvent;
 import com.jsphdev.DBLayout.Event.SearchEvent;
+import com.jsphdev.DBLayout.Profile.CreateProfile;
+import com.jsphdev.DBLayout.Profile.SearchProfile;
+import com.jsphdev.DBLayout.User.CreateUser;
 import com.jsphdev.abstrct.Event;
+import com.jsphdev.abstrct.User;
+import com.jsphdev.entities.model.Profile;
 import com.jsphdev.exception.CustomReadException;
 import com.jsphdev.model.Log;
 
@@ -99,7 +104,22 @@ public class DatabaseIO {
     public List<Event> getEventByName(String name){
         SearchEvent searchEvent = new SearchEvent();
         System.out.println("In dbIO, calling getEventByName in SearchEvents ");
-        return searchEvent.getEventByName(context,name);
+        return searchEvent.getEventByName(context, name);
+    }
+
+    public boolean registerUser(String username, String password, User user){
+        CreateUser createUser = new CreateUser();
+        return createUser.createUser(username, password, user, context);
+    }
+
+    public boolean registerProfile(Profile profile){
+        CreateProfile createProfile = new CreateProfile();
+        return createProfile.createProfile(profile, context);
+    }
+
+    public Profile getProfile(String identifier){
+        SearchProfile searchProfile = new SearchProfile();
+        return searchProfile.searchProfile(identifier,context);
     }
 
 

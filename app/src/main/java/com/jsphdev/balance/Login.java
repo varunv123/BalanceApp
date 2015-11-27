@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.jsphdev.entities.model.Student;
 import com.jsphdev.exception.InvalidInputException;
+import com.jsphdev.utils.UserUtils;
 
 public class Login extends Activity {
 
@@ -34,9 +36,19 @@ public class Login extends Activity {
                             Log.d("Login_Password", password);
                             //go to profile
                             Intent intent = new Intent(v.getContext(), Profile.class);
+                            UserUtils userUtils = new UserUtils();
+                            Student student = new Student();
+                            student.setIdentifier(1);
+                            userUtils.registerUser(emailId, password, student, getApplicationContext());
+                            com.jsphdev.entities.model.Profile profile = new com.jsphdev.entities.model.Profile(
+                                    "Test1","Profile1","CMU1","test1@balance.com","123-456-0000",1);
+                            userUtils.registerProfile(student,profile,getApplicationContext());
+                            intent.putExtra("UserId",String.valueOf(1));
                             startActivity(intent);
                         } catch (InvalidInputException e) {
                             Log.d("LoginException", e.getMessage());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
 
                     }

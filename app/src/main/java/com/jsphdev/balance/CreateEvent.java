@@ -80,13 +80,14 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
                                 e.printStackTrace();
                             }
                             com.jsphdev.entities.model.Location location = new com.jsphdev.entities.model.Location(20.1,300.1);
-                            Event event = new DoubleEvent("testEvent3",4,startDate,endDate,location);
+                            Event event = new DoubleEvent("testEvent2",4,startDate,endDate,location);
                             com.jsphdev.entities.model.Calendar calendar = new com.jsphdev.entities.model.Calendar();
                             System.out.println("Trying to regitser event");
                             calendar.registerEvent(event,getApplicationContext());
                             Toast.makeText(getApplicationContext(), "Event Created successful.",
                                     Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(v.getContext(), Profile.class);
+                            intent.putExtra("UserId","");
                             startActivity(intent);
                         } catch (InvalidInputException e) {
                             Log.e("CreateEventActivity", e.getMessage());

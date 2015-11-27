@@ -11,7 +11,7 @@ import com.jsphdev.database.DatabaseHelper;
  */
 public class CreateEvent {
 
-    public static final String TABLE_EVENTS = "events";
+    public static final String TABLE_EVENTS = "event";
 
     public static final String COLUMN_EVENTNAME = "eventname";
     public static final String COLUMN_IDENTTIFIER = "eventidentifier";
@@ -29,7 +29,7 @@ public class CreateEvent {
         values.put(COLUMN_ENDDATE, event.getEndDate().toString());
         values.put(COLUMN_LATITUDE, event.getLocation().getxCoordinate());
         values.put(COLUMN_LONGITUDE, event.getLocation().getyCoordinate());
-        System.out.println("In Calendar, inserting event into table");
+        System.out.println("In createEvent, inserting event into table");
         return DatabaseHelper.get_instance(context).insertValueToTable(TABLE_EVENTS,values);
     }
 }

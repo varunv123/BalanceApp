@@ -13,6 +13,19 @@ public class Profile {
     private String phoneNo;
     private int identifier;
 
+    public Profile(){
+
+    }
+
+    public Profile(String firstName,String lastName,String address,String email,String phoneNo,int identifier){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.email = email;
+        this.phoneNo = phoneNo;
+        this.identifier = identifier;
+    }
+
     public String getFirstName() {
         return firstName;
     }

@@ -21,7 +21,7 @@ import java.util.Locale;
  */
 public class SearchEvent {
 
-    public static final String TABLE_EVENTS = "events";
+    public static final String TABLE_EVENTS = "event";
 
     public static final String COLUMN_EVENTNAME = "eventname";
     public static final String COLUMN_IDENTTIFIER = "eventidentifier";

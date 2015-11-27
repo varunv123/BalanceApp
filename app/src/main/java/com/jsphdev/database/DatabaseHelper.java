@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.jsphdev.abstrct.Event;
 import com.jsphdev.entities.model.DoubleEvent;
 import com.jsphdev.entities.model.Location;
+import com.jsphdev.entities.model.Profile;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -25,7 +26,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper dbHelper;
     private static final String DATABASE_NAME="LOGDB";
-    public static final String TABLE_EVENTS = "events";
+    public static final String TABLE_EVENTS = "event";
+    public static final String TABLE_USERS = "user";
+    public static final String TABLE_PROFILES = "profile";
+
 
     public static final String COLUMN_EVENTNAME = "eventname";
     public static final String COLUMN_IDENTTIFIER = "eventidentifier";
@@ -34,10 +38,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LATITUDE = "eventlatitude";
     public static final String COLUMN_LONGITUDE = "eventlongitude";
 
+    public static final String COLUMN_USERNAME = "username";
+    public static final String COLUMN_PASSWORD = "userpassword";
+
+    public static final String COLUMN_FIRSTNAME = "firstname";
+    public static final String COLUMN_LASTNAME = "lastname";
+    public static final String COLUMN_ADDRESS = "address";
+    public static final String COLUMN_EMAIL = "email";
+    public static final String COLUMN_PHONENO = "phoneno";
+    public static final String COLUMN_USERID = "user_id";
+
 
     public static DatabaseHelper get_instance(Context context){
         if (dbHelper==null) {
-            dbHelper = new DatabaseHelper(context, DATABASE_NAME, null, 2);
+            dbHelper = new DatabaseHelper(context, DATABASE_NAME, null, 5);
             System.out.println("Created DB");
         }
         System.out.println(dbHelper);
@@ -58,12 +72,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "log_name text, log_type text, log_message text);";
         db.execSQL(createTableQuery);
         String CREATE_EVENTS_TABLE = "CREATE TABLE " +
-                TABLE_EVENTS + "("
+                TABLE_EVENTS + "( ID INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_EVENTNAME
                 + " TEXT," + COLUMN_IDENTTIFIER + " INTEGER," + COLUMN_STARTDATE
                 + " TEXT," + COLUMN_ENDDATE + " TEXT," + COLUMN_LATITUDE
                 + " REAL," + COLUMN_LONGITUDE + " REAL" + ")";
         db.execSQL(CREATE_EVENTS_TABLE);
+        String CREATE_USERS_TABLE = "CREATE TABLE " +
+                TABLE_USERS + "( ID INTEGER PRIMARY KEY, "
+                + COLUMN_USERNAME
+                + " TEXT," + COLUMN_PASSWORD + " TEXT" + ")";
+        db.execSQL(CREATE_USERS_TABLE);
+        String CREATE_PROFILE_TABLE = "CREATE TABLE " +
+                TABLE_PROFILES + "( ID INTEGER PRIMARY KEY, "
+                + COLUMN_FIRSTNAME
+                + " TEXT, " + COLUMN_LASTNAME + " TEXT, "
+                + COLUMN_ADDRESS + " TEXT, " + COLUMN_EMAIL + " TEXT,"
+                + COLUMN_PHONENO + " TEXT,"
+                + "FOREIGN KEY(ID) REFERENCES "
+                + TABLE_USERS + "(ID) "+ ")";
+        System.out.println(CREATE_PROFILE_TABLE);
+        db.execSQL(CREATE_PROFILE_TABLE);
         System.out.println("Created Table");
     }
 
@@ -72,6 +101,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                           int newVersion)
     {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFILES);
+        db.execSQL("DROP TABLE IF EXISTS EVENTS");
         db.execSQL("DROP TABLE IF EXISTS logs");
         onCreate(db);
     }
@@ -113,7 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Event> getAllEvents(){
         System.out.println("DbHelper, getting all events.");
         String query = "SELECT * FROM " + TABLE_EVENTS + ";";
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         String name;
         int identifier;
@@ -158,7 +190,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<Event> getEventByName(String query){
         System.out.println("DbHelper, getting all events.");
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         String name;
         int identifier;
@@ -171,16 +203,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Event> events = new ArrayList<Event>();
         double xLocation,yLocation;
         while (cursor.moveToNext()) {
-            name = (cursor.getString(0));
-            identifier = (Integer.parseInt(cursor.getString(1)));
-            startDateStr = cursor.getString(2);
+            name = (cursor.getString(1));
+            identifier = (Integer.parseInt(cursor.getString(2)));
+            startDateStr = cursor.getString(3);
             DateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
             try {
                 startDate = format.parse(startDateStr);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            endDateStr = cursor.getString(3);
+            endDateStr = cursor.getString(4);
             try {
                 endDate = format.parse(endDateStr);
             } catch (ParseException e) {
@@ -188,8 +220,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             System.out.println(startDate.toString());
             System.out.println(endDate.toString());
-            xLocation = cursor.getDouble(4);
-            yLocation = cursor.getDouble(5);
+            xLocation = cursor.getDouble(5);
+            yLocation = cursor.getDouble(6);
             location = new Location(xLocation,yLocation);
             if (startDate != null && endDate != null){
                 event = new DoubleEvent(name,identifier,startDate,endDate,location);
@@ -199,6 +231,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         System.out.println("DbHelper, searched by event name.");
         return events;
+    }
+
+    public Profile getProfileByIdentifier(String query){
+        System.out.println("DbHelper, getting all events.");
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Profile profile = new Profile();
+        if (cursor.moveToFirst()){
+            cursor.moveToFirst();
+            profile.setIdentifier(Integer.parseInt(cursor.getString(0)));
+            profile.setFirstName(cursor.getString(1));
+            profile.setLastName(cursor.getString(2));
+            profile.setAddress(cursor.getString(3));
+            profile.setEmail(cursor.getString(4));
+            profile.setPhoneNo(cursor.getString(5));
+            cursor.close();
+        }
+        else
+            profile = null;
+        return profile;
     }
 
 }

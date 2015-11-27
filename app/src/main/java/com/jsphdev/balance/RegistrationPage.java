@@ -24,7 +24,7 @@ public class RegistrationPage extends Activity {
                         //get input from user
                         try {
                             getRegistrationCredentials(v);
-                            Intent intent = new Intent(v.getContext(), Profile.class);
+                            Intent intent = new Intent(v.getContext(), ProfileActivity.class);
                             startActivity(intent);
                         } catch (InvalidInputException e) {
                             Log.d("RegisterException", e.getMessage());

@@ -39,16 +39,16 @@ public class UserUtils implements IUserUtils {
 //        UserService userService = new UserService();
 //        user.getProfile().setIdentifier(userService.createProfile(user));
         DatabaseIO dbIO = new DatabaseIO(context);
-        Log log = new Log("Register Profile","Insert Log","Saved Profile of name: " + profile.getFirstName()+", " + profile.getLastName()+".");
+        Log log = new Log("Register ProfileActivity","Insert Log","Saved ProfileActivity of name: " + profile.getFirstName()+", " + profile.getLastName()+".");
         dbIO.insertLogData(log);
         dbIO.registerProfile(profile);
-        System.out.println("Registered Profile");
+        System.out.println("Registered ProfileActivity");
     }
 
     @Override
     public Profile getProfile(String identifier,Context context) throws Exception {
         DatabaseIO dbIO = new DatabaseIO(context);
-        Log log = new Log("Getting Profile","Read Log","Got User of name: " + identifier+".");
+        Log log = new Log("Getting ProfileActivity","Read Log","Got User of name: " + identifier+".");
         dbIO.insertLogData(log);
         return dbIO.getProfile(identifier);
     }

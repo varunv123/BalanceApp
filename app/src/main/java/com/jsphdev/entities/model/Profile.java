@@ -78,7 +78,7 @@ public class Profile {
 
     @Override
     public String toString() {
-        return "Profile[firstName="+this.firstName+",lastName="
+        return "ProfileActivity[firstName="+this.firstName+",lastName="
                 +this.lastName+",department="+this.department+",profilepic="+this.profilePicture+","
                 +"email="+this.email+",phoneno="+this.phoneNo+"]";
     }

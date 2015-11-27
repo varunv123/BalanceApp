@@ -28,8 +28,6 @@ import com.jsphdev.abstrct.Event;
 import com.jsphdev.entities.model.DoubleEvent;
 import com.jsphdev.exception.InvalidInputException;
 
-import org.w3c.dom.Text;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -69,7 +67,7 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
                             getEventDetails(v);
                             //Toast to notify successful event creation
 
-                            //go to Profile page
+                            //go to ProfileActivity page
                             java.text.DateFormat format = new SimpleDateFormat("yyyy-MM-DD HH:mm", Locale.ENGLISH);
                             Date startDate = null;
                             Date endDate = null;
@@ -80,13 +78,15 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
                                 e.printStackTrace();
                             }
                             com.jsphdev.entities.model.Location location = new com.jsphdev.entities.model.Location(20.1,300.1);
-                            Event event = new DoubleEvent("testEvent2",4,startDate,endDate,location);
+                            EditText givenEventName = (EditText) findViewById(R.id.EditEventName);
+                            String eventName = givenEventName.getText().toString();
+                            Event event = new DoubleEvent(eventName,4,startDate,endDate,location);
                             com.jsphdev.entities.model.Calendar calendar = new com.jsphdev.entities.model.Calendar();
                             System.out.println("Trying to regitser event");
-                            calendar.registerEvent(event,getApplicationContext());
+                            calendar.registerEvent(event, getApplicationContext());
                             Toast.makeText(getApplicationContext(), "Event Created successful.",
                                     Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(v.getContext(), Profile.class);
+                            Intent intent = new Intent(v.getContext(), ProfileActivity.class);
                             intent.putExtra("UserId","");
                             startActivity(intent);
                         } catch (InvalidInputException e) {

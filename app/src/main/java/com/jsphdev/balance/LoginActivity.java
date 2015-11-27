@@ -12,7 +12,7 @@ import com.jsphdev.entities.model.Student;
 import com.jsphdev.exception.InvalidInputException;
 import com.jsphdev.utils.UserUtils;
 
-public class Login extends Activity {
+public class LoginActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +35,14 @@ public class Login extends Activity {
                             Log.d("Login_EmailId", emailId);
                             Log.d("Login_Password", password);
                             //go to profile
-                            Intent intent = new Intent(v.getContext(), Profile.class);
+                            Intent intent = new Intent(v.getContext(), ProfileActivity.class);
                             UserUtils userUtils = new UserUtils();
                             Student student = new Student();
                             student.setIdentifier(1);
                             userUtils.registerUser(emailId, password, student, getApplicationContext());
                             com.jsphdev.entities.model.Profile profile = new com.jsphdev.entities.model.Profile(
                                     "Test1","Profile1","CMU1","test1@balance.com","123-456-0000",1);
-                            userUtils.registerProfile(student,profile,getApplicationContext());
+                            userUtils.registerProfile(student, profile, getApplicationContext());
                             intent.putExtra("UserId",String.valueOf(1));
                             startActivity(intent);
                         } catch (InvalidInputException e) {

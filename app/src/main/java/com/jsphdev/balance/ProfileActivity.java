@@ -14,7 +14,7 @@ import org.w3c.dom.Text;
 
 
 public class
-        Profile extends AppCompatActivity {
+        ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

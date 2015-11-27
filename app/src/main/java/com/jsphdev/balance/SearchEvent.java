@@ -47,7 +47,7 @@ public class SearchEvent extends FragmentActivity implements OnMapReadyCallback 
                     public void onClick(View v) {
                         try{
                             getSearchEventDetails(v);
-                            //go to Profile page
+                            //go to ProfileActivity page
                             CalendarUtils calUtils = new CalendarUtils();
                             EditText findEventByName = (EditText) findViewById(R.id.SearchEventByName);
                             String eventName = findEventByName.getText().toString();

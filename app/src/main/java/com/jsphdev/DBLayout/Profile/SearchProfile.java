@@ -13,9 +13,11 @@ public class SearchProfile {
     public static final String TABLE_PROFILES = "profile";
     public static final String COLUMN_FIRSTNAME = "firstname";
     public static final String COLUMN_LASTNAME = "lastname";
-    public static final String COLUMN_ADDRESS = "address";
+    public static final String COLUMN_DEPARTMENT = "department";
     public static final String COLUMN_EMAIL = "email";
     public static final String COLUMN_PHONENO = "phoneno";
+    public static final String COLUMN_ANDREWID = "andrewif";
+    public static final String COLUMN_PROFILEPIC = "profilepic";
     public static final String COLUMN_USERID = "user_id";
 
     public Profile searchProfile(String identifier,Context context){

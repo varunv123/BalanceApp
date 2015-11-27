@@ -8,7 +8,7 @@ public class Profile {
     private String profilePicture;
     private String firstName;
     private String lastName;
-    private String address;
+    private String department;
     private String email;
     private String phoneNo;
     private int identifier;
@@ -17,10 +17,10 @@ public class Profile {
 
     }
 
-    public Profile(String firstName,String lastName,String address,String email,String phoneNo,int identifier){
+    public Profile(String firstName,String lastName,String department,String email,String phoneNo,int identifier){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
+        this.department = department;
         this.email = email;
         this.phoneNo = phoneNo;
         this.identifier = identifier;
@@ -47,11 +47,11 @@ public class Profile {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    public String getAddress() {
-        return address;
+    public String getDepartment() {
+        return department;
     }
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDepartment(String department) {
+        this.department = department;
     }
     public String getEmail() {
         return email;
@@ -79,7 +79,7 @@ public class Profile {
     @Override
     public String toString() {
         return "Profile[firstName="+this.firstName+",lastName="
-                +this.lastName+",address="+this.address+",profilepic="+this.profilePicture+","
+                +this.lastName+",department="+this.department+",profilepic="+this.profilePicture+","
                 +"email="+this.email+",phoneno="+this.phoneNo+"]";
     }
 

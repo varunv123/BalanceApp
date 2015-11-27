@@ -43,15 +43,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String COLUMN_FIRSTNAME = "firstname";
     public static final String COLUMN_LASTNAME = "lastname";
-    public static final String COLUMN_ADDRESS = "address";
+    public static final String COLUMN_DEPARTMENT = "department";
     public static final String COLUMN_EMAIL = "email";
     public static final String COLUMN_PHONENO = "phoneno";
+    public static final String COLUMN_ANDREWID = "andrewif";
+    public static final String COLUMN_PROFILEPIC = "profilepic";
     public static final String COLUMN_USERID = "user_id";
 
 
     public static DatabaseHelper get_instance(Context context){
         if (dbHelper==null) {
-            dbHelper = new DatabaseHelper(context, DATABASE_NAME, null, 5);
+            dbHelper = new DatabaseHelper(context, DATABASE_NAME, null, 6);
             System.out.println("Created DB");
         }
         System.out.println(dbHelper);
@@ -87,8 +89,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 TABLE_PROFILES + "( ID INTEGER PRIMARY KEY, "
                 + COLUMN_FIRSTNAME
                 + " TEXT, " + COLUMN_LASTNAME + " TEXT, "
-                + COLUMN_ADDRESS + " TEXT, " + COLUMN_EMAIL + " TEXT,"
+                + COLUMN_DEPARTMENT + " TEXT, " + COLUMN_EMAIL + " TEXT,"
                 + COLUMN_PHONENO + " TEXT,"
+                + COLUMN_ANDREWID + " TEXT,"
+                + COLUMN_PROFILEPIC + " TEXT,"
                 + "FOREIGN KEY(ID) REFERENCES "
                 + TABLE_USERS + "(ID) "+ ")";
         System.out.println(CREATE_PROFILE_TABLE);
@@ -103,7 +107,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROFILES);
-        db.execSQL("DROP TABLE IF EXISTS EVENTS");
         db.execSQL("DROP TABLE IF EXISTS logs");
         onCreate(db);
     }
@@ -243,7 +246,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             profile.setIdentifier(Integer.parseInt(cursor.getString(0)));
             profile.setFirstName(cursor.getString(1));
             profile.setLastName(cursor.getString(2));
-            profile.setAddress(cursor.getString(3));
+            profile.setDepartment(cursor.getString(3));
             profile.setEmail(cursor.getString(4));
             profile.setPhoneNo(cursor.getString(5));
             cursor.close();

@@ -40,13 +40,11 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
     private GoogleMap gMap1;
     private DatePicker datePicker;
     private Calendar calendar;
-    private static TextView textViewStartTime,textViewStopTime,textViewStartDate,textViewStopDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
-
 
 
         android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
@@ -96,67 +94,8 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
                 }
         );
 
-        Button buttonStartTime = (Button) findViewById(R.id.ButtonChooseStartTime);
-        buttonStartTime.setOnClickListener(getStartTime);
-
-        Button buttonStopTime = (Button) findViewById(R.id.ButtonChooseStopTime);
-        buttonStopTime.setOnClickListener(getStopTime);
-
-        Button buttonStartDate = (Button) findViewById(R.id.ButtonChooseStartDate);
-        buttonStartDate.setOnClickListener(getStartDate);
-
-        Button buttonStopDate = (Button) findViewById(R.id.ButtonChooseStopDate);
-        buttonStopDate.setOnClickListener(getStopDate);
-
-        textViewStartTime = (TextView) findViewById(R.id.TextViewStartTime);
-        textViewStopTime = (TextView) findViewById(R.id.TextViewStopTime);
-        textViewStartDate = (TextView) findViewById(R.id.TextViewStartDate);
-        textViewStopDate = (TextView) findViewById(R.id.TextViewStopDate);
     }
 
-    View.OnClickListener getStartTime = new View.OnClickListener() {
-        public void onClick(View v){
-            showStartTimePickerDialog(v);
-        }
-    };
-
-    View.OnClickListener getStopTime = new View.OnClickListener() {
-        public void onClick(View v){
-            showStopTimePickerDialog(v);
-        }
-    };
-
-    View.OnClickListener getStartDate = new View.OnClickListener() {
-        public void onClick(View v){
-            showStartDatePickerDialog(v);
-        }
-    };
-
-    View.OnClickListener getStopDate = new View.OnClickListener() {
-        public void onClick(View v){
-            showStopDatePickerDialog(v);
-        }
-    };
-
-    public void showStartTimePickerDialog(View v) {
-        DialogFragment newFragment = new BalanceStartTimePicker();
-        newFragment.show(getFragmentManager(),"startTimePicker");
-    }
-
-    public void showStopTimePickerDialog(View v) {
-        DialogFragment newFragment = new BalanceStopTimePicker();
-        newFragment.show(getFragmentManager(),"stopTimePicker");
-    }
-
-    public void showStartDatePickerDialog(View v) {
-        DialogFragment newFragment = new BalanceStartDatePicker();
-        newFragment.show(getFragmentManager(),"startDatePicker");
-    }
-
-    public void showStopDatePickerDialog(View v) {
-        DialogFragment newFragment = new BalanceStopDatePicker();
-        newFragment.show(getFragmentManager(),"stopDatePicker");
-    }
 
     public void getEventDetails(View v) throws InvalidInputException{
         String eventName;
@@ -202,90 +141,5 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
                 .position(new LatLng(10, 10))
                 .title("Event Location")
                 .draggable(true));
-    }
-
-
-    public static class BalanceStartTimePicker extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
-
-
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            textViewStartTime.setText("Hour: " + hourOfDay + ", Min: " + minute);
-        }
-    }
-
-    public static class BalanceStopTimePicker extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
-
-
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            textViewStopTime.setText("Hour: " + hourOfDay + ", Min: " + minute);
-        }
-    }
-
-    public static class BalanceStartDatePicker extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            textViewStartDate.setText("Year: " + year +", Month: " + month + ", Day: " + day);
-        }
-    }
-
-    public static class BalanceStopDatePicker extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            textViewStopDate.setText("Year: " + year +", Month: " + month + ", Day: " + day);
-        }
     }
 }

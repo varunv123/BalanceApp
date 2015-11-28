@@ -8,21 +8,13 @@ public class Profile {
     private String profilePicture;
     private String firstName;
     private String lastName;
-    private String address;
+    private String department;
     private String email;
     private String phoneNo;
-    private int identifier;
+    private String andrewId;
 
     public String getFirstName() {
         return firstName;
-    }
-
-    public int getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(int identifier) {
-        this.identifier = identifier;
     }
 
     public void setFirstName(String firstName) {
@@ -34,11 +26,11 @@ public class Profile {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    public String getAddress() {
-        return address;
+    public String getDepartment() {
+        return department;
     }
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDepartment(String department) {
+        this.department = department;
     }
     public String getEmail() {
         return email;
@@ -63,11 +55,11 @@ public class Profile {
         this.phoneNo = phoneNo;
     }
 
-    @Override
-    public String toString() {
-        return "Profile[firstName="+this.firstName+",lastName="
-                +this.lastName+",address="+this.address+",profilepic="+this.profilePicture+","
-                +"email="+this.email+",phoneno="+this.phoneNo+"]";
+    public String getAndrewId() {
+        return andrewId;
     }
 
+    public void setAndrewId(String andrewId) {
+        this.andrewId = andrewId;
+    }
 }

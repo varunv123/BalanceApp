@@ -8,7 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.jsphdev.abstrct.User;
+import com.jsphdev.entities.model.Student;
+import com.jsphdev.entities.model.Workspace;
 import com.jsphdev.exception.InvalidInputException;
+import com.jsphdev.utils.UserUtils;
 
 public class Login extends Activity {
 
@@ -16,7 +20,7 @@ public class Login extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        Workspace.get_instance().setCurrentContext(getApplicationContext());
 
         Button loginButton = (Button)findViewById(R.id.loginButton);
         loginButton.setOnClickListener(
@@ -32,10 +36,8 @@ public class Login extends Activity {
                             password = credentialsParts[1];
                             Log.d("Login_EmailId", emailId);
                             Log.d("Login_Password", password);
-                            //go to profile
-                            Intent intent = new Intent(v.getContext(), Profile.class);
-                            startActivity(intent);
-                        } catch (InvalidInputException e) {
+                            UserUtils.get_instance().verifyUser(emailId, password);
+                        } catch (Exception e) {
                             Log.d("LoginException", e.getMessage());
                         }
 

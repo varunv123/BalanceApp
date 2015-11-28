@@ -11,6 +11,10 @@ public class Location implements Serializable{
     private double xCoordinate;
     private double yCoordinate;
 
+    public Location(){
+
+    }
+
     public Location(double xCoordinate, double yCoordinate){
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;

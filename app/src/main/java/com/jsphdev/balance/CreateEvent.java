@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -28,10 +30,12 @@ import com.jsphdev.abstrct.Event;
 import com.jsphdev.entities.model.DoubleEvent;
 import com.jsphdev.exception.InvalidInputException;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class CreateEvent extends FragmentActivity implements OnMapReadyCallback {
@@ -66,19 +70,32 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
                             //Toast to notify successful event creation
 
                             //go to ProfileActivity page
-                            java.text.DateFormat format = new SimpleDateFormat("yyyy-MM-DD HH:mm", Locale.ENGLISH);
-                            Date startDate = null;
-                            Date endDate = null;
-                            try {
-                                startDate = format.parse("2013-03-02 10:10");
-                                endDate = format.parse("2013-04-03 11:11");
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            com.jsphdev.entities.model.Location location = new com.jsphdev.entities.model.Location(20.1,300.1);
+//                            java.text.DateFormat format = new SimpleDateFormat("yyyy-MM-DD HH:mm", Locale.ENGLISH);
+//                            Date startDate = null;
+//                            Date endDate = null;
+//                            try {
+//                                startDate = format.parse("2013-03-02 10:10");
+//                                endDate = format.parse("2013-04-03 11:11");
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
+//                            }
+
+                            EditText startDateEditText = (EditText) findViewById(R.id.EditEventDate);
+                            String startDateString = startDateEditText.getText().toString();
+                            EditText startTimeEditText = (EditText) findViewById(R.id.EditEventStartTime);
+                            String startTimeString = startTimeEditText.getText().toString();
+                            EditText stopTimeEditText = (EditText) findViewById(R.id.EditEventStopTime);
+                            String stopTimeString = stopTimeEditText.getText().toString();
+                            Date startDate = getDateObject(startDateString + "," + startTimeString);
+                            Date endDate = getDateObject(startDateString + "," + stopTimeString);
+
+                            EditText givenLocation = (EditText) findViewById(R.id.EditEventLocation);
+                            String locationString = givenLocation.getText().toString();
+                            //com.jsphdev.entities.model.Location location = new com.jsphdev.entities.model.Location(20.1,300.1);
+                            com.jsphdev.entities.model.Location location = getLocationObject(locationString);
                             EditText givenEventName = (EditText) findViewById(R.id.EditEventName);
                             String eventName = givenEventName.getText().toString();
-                            Event event = new DoubleEvent(eventName,4,startDate,endDate,location);
+                            Event event = new DoubleEvent(eventName,5,startDate,endDate,location);
                             com.jsphdev.entities.model.Calendar calendar = new com.jsphdev.entities.model.Calendar();
                             System.out.println("Trying to regitser event");
                             calendar.registerEvent(event, getApplicationContext());
@@ -142,4 +159,33 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
                 .title("Event Location")
                 .draggable(true));
     }
+
+    public Date getDateObject (String dateTime){
+        Date date = null;
+        try{
+            java.text.DateFormat format = new SimpleDateFormat("dd/MM/yy,HH:mm", Locale.ENGLISH);
+            date = format.parse(dateTime);
+            System.out.println("The date object is printed like this: " + date.toString());
+        }catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public com.jsphdev.entities.model.Location getLocationObject(String eventLocation){
+        com.jsphdev.entities.model.Location location = new com.jsphdev.entities.model.Location();
+        try{
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocationName(eventLocation, 1);
+            Address address = addresses.get(0);
+            location.setxCoordinate(address.getLongitude());
+            location.setyCoordinate(address.getLatitude());
+            location.setName(eventLocation);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        System.out.println("The location object is printed like this: " + location.toString());
+        return location;
+    }
+
 }

@@ -8,7 +8,11 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<<<<<<< HEAD
     <uses-permission android:name="android.permission.INTERNET" />
+=======
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+>>>>>>> f98046478d0899d0f691b4d495580d4a6c384800
 
     <supports-screens
         android:anyDensity="true"
@@ -21,14 +25,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".Login" >
+        <activity android:name=".LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Profile" >
+        <activity android:name=".ProfileActivity" >
         </activity>
         <activity android:name=".RegistrationPage" >
         </activity>
@@ -51,6 +55,8 @@
         <activity android:name=".SearchResults" >
         </activity>
         <activity android:name=".EventPage" >
+        </activity>
+        <activity android:name=".CalendarPage" >
         </activity>
     </application>
 

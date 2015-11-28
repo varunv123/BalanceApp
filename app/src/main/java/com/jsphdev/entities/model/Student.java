@@ -12,6 +12,7 @@ public class Student extends User implements IStudent {
 
     private boolean isBlocked;
 
+
     public Student(){
         this.isBlocked=false;
     }

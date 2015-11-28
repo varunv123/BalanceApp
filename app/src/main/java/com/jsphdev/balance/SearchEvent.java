@@ -15,7 +15,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jsphdev.abstrct.Event;
 import com.jsphdev.exception.InvalidInputException;
+import com.jsphdev.utils.CalendarUtils;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class SearchEvent extends FragmentActivity implements OnMapReadyCallback {
 
@@ -42,8 +47,18 @@ public class SearchEvent extends FragmentActivity implements OnMapReadyCallback 
                     public void onClick(View v) {
                         try{
                             getSearchEventDetails(v);
-                            //go to Profile page
+                            //go to ProfileActivity page
+                            CalendarUtils calUtils = new CalendarUtils();
+                            EditText findEventByName = (EditText) findViewById(R.id.SearchEventByName);
+                            String eventName = findEventByName.getText().toString();
+                            //List<Event> searchResults = calUtils.getEventByDay();
+                            List<Event> searchResults = calUtils.getEventByName(getApplicationContext(),eventName);
+                            //List<Event> searchResults = calUtils.getEventByDay();
+                            //List<Event> searchResults = calUtils.getEventByDay();
+                            //List<Event> searchResults = calUtils.getEventByDay();
                             Intent intent = new Intent(v.getContext(),SearchResults.class);
+                            System.out.println(searchResults.size());
+                            intent.putExtra("events",(Serializable) searchResults);
                             startActivity(intent);
                         }catch (InvalidInputException e) {
                             Log.e("CreateEventActivity", e.getMessage());

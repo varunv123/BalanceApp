@@ -2,116 +2,78 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.jsphdev.balance.CreateEvent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="com.jsphdev.balance.CreateEvent">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        android:layout_width="400dp"
-        android:layout_height="300dp"
-        android:id="@+id/map"
-        tools:context="student.CreateEvent"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:layout_width="400dp"
+            android:layout_height="300dp"
+            android:id="@+id/map"
+            tools:context="student.CreateEvent"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
 
-    <EditText
-        android:id="@+id/EditEventName"
-        android:layout_height="wrap_content"
-        android:hint="Event Name"
-        android:inputType="text"
-        android:layout_width="fill_parent"
-        android:layout_below="@+id/map">
-    </EditText>
+        <EditText
+            android:id="@+id/EditEventName"
+            android:layout_height="wrap_content"
+            android:hint="Event Name"
+            android:inputType="text"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/map">
+        </EditText>
 
-    <Button
-        android:id="@+id/ButtonChooseStartTime"
-        android:layout_height="wrap_content"
-        android:text="Choose Start Time"
-        android:layout_width="fill_parent"
-        android:layout_below="@+id/EditEventName">
-    </Button>
-
-    <TextView
-        android:id="@+id/TextViewStartTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ButtonChooseStartTime"
-        android:text="Start Time Selected"
-        />
-
-    <Button
-        android:id="@+id/ButtonChooseStartDate"
-        android:layout_height="wrap_content"
-        android:text="Choose Start Date"
-        android:layout_width="fill_parent"
-        android:layout_below="@+id/TextViewStartTime">
-    </Button>
-
-    <TextView
-        android:id="@+id/TextViewStartDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ButtonChooseStartDate"
-        android:text="Start Date Selected"
-        />
+        <EditText
+            android:id="@+id/EditEventDate"
+            android:layout_height="wrap_content"
+            android:hint="Event Date (dd/mm/yy)"
+            android:inputType="datetime"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/EditEventName">
+        </EditText>
 
 
-    <Button
-        android:id="@+id/ButtonChooseStopTime"
-        android:layout_height="wrap_content"
-        android:text="Choose Stop Time"
-        android:layout_width="fill_parent"
-        android:layout_below="@+id/TextViewStartDate">
-    </Button>
+        <EditText
+            android:id="@+id/EditEventStartTime"
+            android:layout_height="wrap_content"
+            android:hint="Event Start Time (hh:mm)"
+            android:inputType="datetime"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/EditEventDate">
+        </EditText>
 
-    <TextView
-        android:id="@+id/TextViewStopTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ButtonChooseStopTime"
-        android:text="Stop Time Selected"
-        />
+        <EditText
+            android:id="@+id/EditEventStopTime"
+            android:layout_height="wrap_content"
+            android:hint="Event End Time (hh:mm)"
+            android:inputType="datetime"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/EditEventStartTime">
+        </EditText>
 
-    <Button
-        android:id="@+id/ButtonChooseStopDate"
-        android:layout_height="wrap_content"
-        android:text="Choose Stop Date"
-        android:layout_width="fill_parent"
-        android:layout_below="@+id/TextViewStopTime">
-    </Button>
+        <EditText
+            android:id="@+id/EditEventLocation"
+            android:layout_height="wrap_content"
+            android:hint="Event Location"
+            android:inputType="text"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/EditEventStopTime">
+        </EditText>
 
-    <TextView
-        android:id="@+id/TextViewStopDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ButtonChooseStopDate"
-        android:text="Stop Date Selected"
-        />
+        <Button
+            android:id="@+id/ButtonSendFeedback"
+            android:layout_height="wrap_content"
+            android:text="Create Event"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/EditEventLocation">
+        </Button>
 
-
-    <EditText
-        android:id="@+id/EditEventLocation"
-        android:layout_height="wrap_content"
-        android:hint="Event Location"
-        android:inputType="text"
-        android:layout_width="fill_parent"
-        android:layout_below="@+id/TextViewStopDate">
-    </EditText>
-
-    <Button
-        android:id="@+id/ButtonSendFeedback"
-        android:layout_height="wrap_content"
-        android:text="Create Event"
-        android:layout_width="fill_parent"
-        android:layout_below="@+id/EditEventLocation">
-    </Button>
-
-</RelativeLayout>
+    </RelativeLayout>
 
 </ScrollView>
 

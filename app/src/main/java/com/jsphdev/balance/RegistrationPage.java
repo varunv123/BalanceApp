@@ -34,9 +34,15 @@ public class RegistrationPage extends Activity {
                     public void onClick(View v) {
                         try {
                             getRegistrationCredentials(v);
+<<<<<<< HEAD
                             User user = UserUtils.get_instance().createUser(firstName,lastName,andrewId,department,emailId,phoneNo);
                             UserUtils.get_instance().registerUser(emailId,password,user);
                         } catch (Exception e) {
+=======
+                            Intent intent = new Intent(v.getContext(), ProfileActivity.class);
+                            startActivity(intent);
+                        } catch (InvalidInputException e) {
+>>>>>>> f98046478d0899d0f691b4d495580d4a6c384800
                             Log.d("RegisterException", e.getMessage());
                         }
 

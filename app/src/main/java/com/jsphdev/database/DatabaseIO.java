@@ -7,7 +7,16 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.jsphdev.DBLayout.Event.CreateEvent;
+import com.jsphdev.DBLayout.Event.SearchEvent;
+import com.jsphdev.DBLayout.Profile.CreateProfile;
+import com.jsphdev.DBLayout.Profile.SearchProfile;
+import com.jsphdev.DBLayout.User.CreateUser;
+import com.jsphdev.abstrct.Event;
+import com.jsphdev.abstrct.User;
+import com.jsphdev.entities.model.Profile;
 import com.jsphdev.exception.CustomReadException;
 import com.jsphdev.model.Log;
 
@@ -16,24 +25,30 @@ import com.jsphdev.model.Log;
  */
 public class DatabaseIO {
 
-    private static final String DATABASE_NAME="LOGDB";
-    private SQLiteDatabase database;
-    private DatabaseHelper databaseHelper;
+    public static final String TABLE_EVENTS = "events";
+
+    public static final String COLUMN_EVENTNAME = "eventname";
+    public static final String COLUMN_IDENTTIFIER = "eventidentifier";
+    public static final String COLUMN_STARTDATE = "eventstartdate";
+    public static final String COLUMN_ENDDATE = "eventstopdate";
+    public static final String COLUMN_LATITUDE = "eventlatitude";
+    public static final String COLUMN_LONGITUDE = "eventlongitude";
+    private Context context;
 
     public DatabaseIO(Context context)
     {
-        databaseHelper =  new DatabaseHelper(context, DATABASE_NAME, null, 1);
+        this.context = context;
     }
 
     public void open() throws SQLException
     {
-        database = databaseHelper.getWritableDatabase();
+        System.out.println("In dbIO, tring to open dbHelper");
+        DatabaseHelper.get_instance(context).open();
     }
 
     public void close()
     {
-        if (database != null)
-            database.close(); // close the database connection
+        DatabaseHelper.get_instance(context).close();
     }
 
     public boolean insertLogData(Log logs) {
@@ -42,10 +57,7 @@ public class DatabaseIO {
             newLogValue.put("log_name", logs.getName());
             newLogValue.put("log_type", logs.getType());
             newLogValue.put("log_message", logs.getMessage());
-            open();
-            database.insert("logs", null, newLogValue);
-            close();
-            return true;
+            return DatabaseHelper.get_instance(context).insertValueToTable("logs",newLogValue);
         } catch (Exception e){
             e.printStackTrace();
             return false;
@@ -54,7 +66,7 @@ public class DatabaseIO {
 
     public void deleteDB() {
         try {
-            database.delete("logs",null,null);
+            DatabaseHelper.get_instance(context).deleteTable("logs");
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -63,8 +75,10 @@ public class DatabaseIO {
     public ArrayList<Log> getAllLogs() throws CustomReadException {
         ArrayList<Log> logList = new ArrayList<>();
         open();
-        Cursor cursor = database.query("logs", new String[]{"_id", "log_name", "log_type",
+
+        Cursor cursor = DatabaseHelper.get_instance(context).doLogQuery("logs", new String[]{"_id", "log_name", "log_type",
                 "log_message"}, null, null, null, null, "_id");
+
 
         while (cursor.moveToNext()) {
             String name =  cursor.getString(cursor.getColumnIndex("log_name"));
@@ -74,5 +88,39 @@ public class DatabaseIO {
         }
         return logList;
     }
+
+    public boolean registerEvent(Event event){
+        System.out.println("In dbIO, registering");
+        CreateEvent createEvent = new CreateEvent();
+        return createEvent.createEvent(event,context);
+    }
+
+    public List<Event> getAllEvents(){
+        SearchEvent searchEvent = new SearchEvent();
+        System.out.println("In dbIO, calling getAllEvents in SearchEvents ");
+        return searchEvent.getAllEvents(context);
+    }
+
+    public List<Event> getEventByName(String name){
+        SearchEvent searchEvent = new SearchEvent();
+        System.out.println("In dbIO, calling getEventByName in SearchEvents ");
+        return searchEvent.getEventByName(context, name);
+    }
+
+    public boolean registerUser(String username, String password, User user){
+        CreateUser createUser = new CreateUser();
+        return createUser.createUser(username, password, user, context);
+    }
+
+    public boolean registerProfile(Profile profile){
+        CreateProfile createProfile = new CreateProfile();
+        return createProfile.createProfile(profile, context);
+    }
+
+    public Profile getProfile(String identifier){
+        SearchProfile searchProfile = new SearchProfile();
+        return searchProfile.searchProfile(identifier,context);
+    }
+
 
 }

@@ -1,13 +1,25 @@
 package com.jsphdev.entities.model;
 
+import java.io.Serializable;
+
 /**
  * Created by vikramn on 11/13/15.
  */
-public class Location {
+public class Location implements Serializable{
 
     private String name;
     private double xCoordinate;
     private double yCoordinate;
+
+    public Location(){
+
+    }
+
+    public Location(double xCoordinate, double yCoordinate){
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+    }
+
     public String getName() {
         return name;
     }

@@ -9,14 +9,12 @@ import com.jsphdev.abstrct.User;
  */
 public interface IUserRemoteService {
 
-    public int registerRemoteUser(String userName, String passWord) throws Exception;
-    public int verifyUser(String userName, String passWord);
+    public void verifyUser(String userName, String passWord);
+    public void registerUser(String userName,String passWord,User user);
     public int removeUser(User user);
     public List<User> getAllUser();
     public List<User> getUserByUserName(String username);
     public void updateProfile(User user);
-
-
-    public int createProfile(User user) throws Exception;
+    public void getProfile();
 
 }

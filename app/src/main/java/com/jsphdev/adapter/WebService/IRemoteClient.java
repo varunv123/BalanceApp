@@ -1,7 +1,7 @@
 package com.jsphdev.adapter.WebService;
 
+
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 
 /**
  * Created by vikramn on 11/14/15.

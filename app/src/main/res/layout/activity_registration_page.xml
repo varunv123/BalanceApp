@@ -1,113 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    tools:context="com.jsphdev.balance.RegistrationPage">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name"
-        android:id="@+id/firstNameField"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            tools:context="com.jsphdev.balance.RegistrationPage"
+            android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/RegisterfirstName"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/firstNameField"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:id="@+id/firstNameField"
+                />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last Name"
-        android:id="@+id/lastNameField"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/RegisterfirstName"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/RegisterfirstName"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/firstNameField"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/RegisterLastName"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/lastNameField" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Name"
+                android:id="@+id/lastNameField"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/RegisterfirstName"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Andrew ID"
-        android:id="@+id/andrewIdField"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/RegisterLastName"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/RegisterLastName"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/lastNameField" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/RegisterAndrewId"
-        android:layout_below="@+id/andrewIdField"
-        android:layout_marginTop="5dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Andrew ID"
+                android:id="@+id/andrewIdField"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/RegisterLastName"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email Id"
-        android:id="@+id/emailIdField"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/RegisterAndrewId"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/RegisterAndrewId"
+                android:layout_below="@+id/andrewIdField"
+                android:layout_marginTop="5dp" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/RegisterEmailId"
-        android:layout_below="@+id/emailIdField"
-        android:layout_marginTop="5dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email Id"
+                android:id="@+id/emailIdField"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/RegisterAndrewId"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Password"
-        android:id="@+id/textView"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/RegisterEmailId"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/RegisterEmailId"
+                android:layout_below="@+id/emailIdField"
+                android:layout_marginTop="5dp" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/RegisterPassword"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/textView" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:id="@+id/passwordField"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/RegisterEmailId"/>
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:spinnerMode="dropdown"
-        android:entries="@array/selectType"
-        android:layout_below="@+id/RegisterPassword"
-        android:layout_marginTop="5dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/RegisterPassword"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/passwordField" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:id="@+id/registerButton"
-        android:layout_below="@+id/checkBox"
-        android:layout_marginTop="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Department"
+                android:id="@+id/departmentField"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/RegisterPassword"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/RegisterDepartment"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/departmentField" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PhoneNo"
+                android:id="@+id/phonenoField"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/RegisterDepartment"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/RegisterPhoneno"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/phonenoField" />
 
 
-</LinearLayout>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner"
+                android:spinnerMode="dropdown"
+                android:entries="@array/selectType"
+                android:layout_below="@+id/RegisterPassword"
+                android:layout_marginTop="5dp"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:id="@+id/registerButton"
+                android:layout_below="@+id/checkBox"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+</ScrollView>

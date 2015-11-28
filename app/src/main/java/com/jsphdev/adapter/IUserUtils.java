@@ -9,7 +9,8 @@ import com.jsphdev.abstrct.User;
 public interface IUserUtils {
 
     public boolean isEventRegistered(Event e);
-    public void registerUser(String username, String password, User user) throws Exception;
-    public void registerProfile(User user) throws Exception;
-
+    public void verifyUser(String username, String password) throws Exception;
+    public User registerUser(String username, String password, User user) throws Exception;
+    public User createUser(String firstName, String lastName, String andrewId, String department,
+                           String emailId,String phoneNo);
 }

@@ -8,9 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.jsphdev.abstrct.User;
+import com.jsphdev.entities.model.Student;
 import com.jsphdev.exception.InvalidInputException;
+import com.jsphdev.utils.UserUtils;
 
 public class RegistrationPage extends Activity {
+
+    private String firstName;
+    private String lastName;
+    private String andrewId;
+    private String department;
+    private String emailId;
+    private String password;
+    private String phoneNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +32,11 @@ public class RegistrationPage extends Activity {
         registerButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
-                        //get input from user
                         try {
                             getRegistrationCredentials(v);
-                            Intent intent = new Intent(v.getContext(), Profile.class);
-                            startActivity(intent);
-                        } catch (InvalidInputException e) {
+                            User user = UserUtils.get_instance().createUser(firstName,lastName,andrewId,department,emailId,phoneNo);
+                            UserUtils.get_instance().registerUser(emailId,password,user);
+                        } catch (Exception e) {
                             Log.d("RegisterException", e.getMessage());
                         }
 
@@ -36,11 +46,6 @@ public class RegistrationPage extends Activity {
     }
 
     public void getRegistrationCredentials(View v) throws InvalidInputException {
-        String firstName;
-        String lastName;
-        String andrewId;
-        String emailId;
-        String password;
 
         String input;
 
@@ -88,6 +93,24 @@ public class RegistrationPage extends Activity {
         }
         else
             password = input;
+
+        EditText givenDepartment = (EditText) findViewById(R.id.RegisterDepartment);
+        input = givenPassword.getText().toString();
+        if ((input == null) || input.isEmpty()){
+            givenPassword.setError("Invalid input");
+            throw new InvalidInputException();
+        }
+        else
+            department = input;
+
+        EditText givenPhoneNo = (EditText) findViewById(R.id.RegisterPhoneno);
+        input = givenPassword.getText().toString();
+        if ((input == null) || input.isEmpty()){
+            givenPassword.setError("Invalid input");
+            throw new InvalidInputException();
+        }
+        else
+            phoneNo = input;
     }
 
 }

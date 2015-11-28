@@ -7,14 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-<<<<<<< HEAD:app/src/main/java/com/jsphdev/balance/Login.java
-import com.jsphdev.abstrct.User;
-import com.jsphdev.entities.model.Student;
 import com.jsphdev.entities.model.Workspace;
-=======
-import com.jsphdev.entities.model.Student;
->>>>>>> f98046478d0899d0f691b4d495580d4a6c384800:app/src/main/java/com/jsphdev/balance/LoginActivity.java
 import com.jsphdev.exception.InvalidInputException;
 import com.jsphdev.utils.UserUtils;
 
@@ -40,28 +33,10 @@ public class LoginActivity extends Activity {
                             password = credentialsParts[1];
                             Log.d("Login_EmailId", emailId);
                             Log.d("Login_Password", password);
-<<<<<<< HEAD:app/src/main/java/com/jsphdev/balance/Login.java
                             UserUtils.get_instance().verifyUser(emailId, password);
                         } catch (Exception e) {
-=======
-                            //go to profile
-                            Intent intent = new Intent(v.getContext(), ProfileActivity.class);
-                            UserUtils userUtils = new UserUtils();
-                            Student student = new Student();
-                            student.setIdentifier(1);
-                            userUtils.registerUser(emailId, password, student, getApplicationContext());
-                            com.jsphdev.entities.model.Profile profile = new com.jsphdev.entities.model.Profile(
-                                    "Test1","Profile1","CMU1","test1@balance.com","123-456-0000",1);
-                            userUtils.registerProfile(student, profile, getApplicationContext());
-                            intent.putExtra("UserId",String.valueOf(1));
-                            startActivity(intent);
-                        } catch (InvalidInputException e) {
->>>>>>> f98046478d0899d0f691b4d495580d4a6c384800:app/src/main/java/com/jsphdev/balance/LoginActivity.java
                             Log.d("LoginException", e.getMessage());
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-
                     }
                 }
         );

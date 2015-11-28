@@ -26,7 +26,6 @@ public class CreateProfile
     public boolean createProfile(Profile profile,Context context){
         System.out.println("In createProfile, creating ProfileActivity");
         ContentValues values = new ContentValues();
-        values.put("ID", profile.getIdentifier());
         values.put(COLUMN_FIRSTNAME, profile.getFirstName());
         values.put(COLUMN_LASTNAME, profile.getLastName());
         values.put(COLUMN_EMAIL, profile.getEmail());

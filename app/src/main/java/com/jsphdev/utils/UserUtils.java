@@ -1,7 +1,5 @@
 package com.jsphdev.utils;
 
-
-<<<<<<< HEAD
 import com.jsphdev.DBLayout.User.CreateUser;
 import com.jsphdev.abstrct.Event;
 import com.jsphdev.abstrct.User;
@@ -10,16 +8,10 @@ import com.jsphdev.entities.model.Calendar;
 import com.jsphdev.entities.model.Profile;
 import com.jsphdev.entities.model.Student;
 import com.jsphdev.entities.model.Workspace;
-=======
 import android.content.Context;
-
-import com.jsphdev.abstrct.Event;
-import com.jsphdev.abstrct.User;
-import com.jsphdev.adapter.IUserUtils;
 import com.jsphdev.database.DatabaseIO;
 import com.jsphdev.entities.model.Profile;
 import com.jsphdev.model.Log;
->>>>>>> f98046478d0899d0f691b4d495580d4a6c384800
 import com.jsphdev.ws.remote.UserService;
 import com.jsphdev.ws.remote.WebServiceClient;
 
@@ -42,7 +34,6 @@ public class UserUtils implements IUserUtils {
         return false;
     }
 
-<<<<<<< HEAD
     public void verifyUser(String username,String password) throws Exception {
         UserService userService = new UserService();
         userService.verifyUser(username, password);
@@ -58,6 +49,8 @@ public class UserUtils implements IUserUtils {
     @Override
     public User createUser(String firstName, String lastName, String andrewId, String department,
                            String emailId,String phoneNo) {
+        System.out.println(department);
+        System.out.println(phoneNo);
 
         Profile profile = new Profile();
         profile.setFirstName(firstName);
@@ -70,7 +63,8 @@ public class UserUtils implements IUserUtils {
         Student student = new Student();
         student.setProfile(profile);
         return student;
-=======
+    }
+
     @Override
     public void registerUser(String username, String password, User user, Context context) throws Exception {
 //        UserService userService = new UserService();
@@ -99,7 +93,6 @@ public class UserUtils implements IUserUtils {
         Log log = new Log("Getting ProfileActivity","Read Log","Got User of name: " + identifier+".");
         dbIO.insertLogData(log);
         return dbIO.getProfile(identifier);
->>>>>>> f98046478d0899d0f691b4d495580d4a6c384800
     }
 
 }

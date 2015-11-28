@@ -8,11 +8,8 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<<<<<<< HEAD
     <uses-permission android:name="android.permission.INTERNET" />
-=======
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
->>>>>>> f98046478d0899d0f691b4d495580d4a6c384800
 
     <supports-screens
         android:anyDensity="true"

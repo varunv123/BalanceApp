@@ -9,6 +9,7 @@ import java.util.List;
 import com.jsphdev.abstrct.User;
 import com.jsphdev.adapter.WebService.IUserRemoteService;
 import com.jsphdev.adapter.WebService.IWebServiceConstants;
+import com.jsphdev.balance.ProfileActivity;
 import com.jsphdev.entities.model.Profile;
 import com.jsphdev.entities.model.Student;
 import com.jsphdev.entities.model.Workspace;
@@ -153,6 +154,8 @@ public class UserService implements IUserRemoteService {
         RequestParams params = new RequestParams();
         System.out.println(Workspace.get_instance().getCurrentUser().getIdentifier());
         params.put("userid", String.valueOf(Workspace.get_instance().getCurrentUser().getIdentifier()));
+        System.out.println("*****" + profile.getDepartment());
+        System.out.println("*****" + profile.getPhoneNo());
         params.put("department",profile.getDepartment());
         params.put("andrewid",profile.getAndrewId());
         params.put("email",profile.getEmail());
@@ -172,7 +175,7 @@ public class UserService implements IUserRemoteService {
                     if (obj.getBoolean("status")) {
                         Workspace.get_instance().getCurrentUser().setProfile(profile);
                         Toast.makeText(Workspace.get_instance().getCurrContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(Workspace.get_instance().getCurrContext(), com.jsphdev.balance.Profile.class);
+                        Intent intent = new Intent(Workspace.get_instance().getCurrContext(), ProfileActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Workspace.get_instance().getCurrContext().startActivity(intent);
                     } else {
@@ -230,7 +233,7 @@ public class UserService implements IUserRemoteService {
                         Workspace.get_instance().getCurrentUser().setProfile(profile);
 
                         Toast.makeText(Workspace.get_instance().getCurrContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(Workspace.get_instance().getCurrContext(), com.jsphdev.balance.Profile.class);
+                        Intent intent = new Intent(Workspace.get_instance().getCurrContext(), ProfileActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Workspace.get_instance().getCurrContext().startActivity(intent);
                     } else {

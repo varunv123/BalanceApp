@@ -34,15 +34,9 @@ public class RegistrationPage extends Activity {
                     public void onClick(View v) {
                         try {
                             getRegistrationCredentials(v);
-<<<<<<< HEAD
                             User user = UserUtils.get_instance().createUser(firstName,lastName,andrewId,department,emailId,phoneNo);
-                            UserUtils.get_instance().registerUser(emailId,password,user);
+                            UserUtils.get_instance().registerUser(emailId, password, user);
                         } catch (Exception e) {
-=======
-                            Intent intent = new Intent(v.getContext(), ProfileActivity.class);
-                            startActivity(intent);
-                        } catch (InvalidInputException e) {
->>>>>>> f98046478d0899d0f691b4d495580d4a6c384800
                             Log.d("RegisterException", e.getMessage());
                         }
 
@@ -101,7 +95,7 @@ public class RegistrationPage extends Activity {
             password = input;
 
         EditText givenDepartment = (EditText) findViewById(R.id.RegisterDepartment);
-        input = givenPassword.getText().toString();
+        input = givenDepartment.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenPassword.setError("Invalid input");
             throw new InvalidInputException();
@@ -110,7 +104,7 @@ public class RegistrationPage extends Activity {
             department = input;
 
         EditText givenPhoneNo = (EditText) findViewById(R.id.RegisterPhoneno);
-        input = givenPassword.getText().toString();
+        input = givenPhoneNo.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenPassword.setError("Invalid input");
             throw new InvalidInputException();

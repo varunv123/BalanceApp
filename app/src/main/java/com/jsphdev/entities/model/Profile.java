@@ -17,13 +17,13 @@ public class Profile {
 
     }
 
-    public Profile(String firstName,String lastName,String department,String email,String phoneNo,int identifier){
+    public Profile(String firstName,String lastName,String department,String email,String phoneNo,String andrewId){
         this.firstName = firstName;
         this.lastName = lastName;
         this.department = department;
         this.email = email;
         this.phoneNo = phoneNo;
-        this.identifier = identifier;
+        this.andrewId = andrewId;
     }
 
     public String getFirstName() {
@@ -68,16 +68,8 @@ public class Profile {
         this.phoneNo = phoneNo;
     }
 
-<<<<<<< HEAD
     public String getAndrewId() {
         return andrewId;
-=======
-    @Override
-    public String toString() {
-        return "ProfileActivity[firstName="+this.firstName+",lastName="
-                +this.lastName+",department="+this.department+",profilepic="+this.profilePicture+","
-                +"email="+this.email+",phoneno="+this.phoneNo+"]";
->>>>>>> f98046478d0899d0f691b4d495580d4a6c384800
     }
 
     public void setAndrewId(String andrewId) {

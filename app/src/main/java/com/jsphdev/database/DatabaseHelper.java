@@ -243,7 +243,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Profile profile = new Profile();
         if (cursor.moveToFirst()){
             cursor.moveToFirst();
-            profile.setIdentifier(Integer.parseInt(cursor.getString(0)));
             profile.setFirstName(cursor.getString(1));
             profile.setLastName(cursor.getString(2));
             profile.setDepartment(cursor.getString(3));

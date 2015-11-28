@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jsphdev.entities.model.Workspace;
 import com.jsphdev.utils.UserUtils;
 
 import org.w3c.dom.Text;
@@ -22,29 +23,17 @@ public class
         setContentView(R.layout.activity_profile);
 
         Button createEventButton = (Button)findViewById(R.id.createEventButton);
+        TextView nameView = (TextView) findViewById(R.id.textView7);
+        nameView.setText(Workspace.get_instance().getCurrentUser().getProfile().getFirstName() + " " + Workspace.get_instance().getCurrentUser().getProfile().getLastName());
+        TextView deptView = (TextView) findViewById(R.id.textView8);
+        deptView.setText(Workspace.get_instance().getCurrentUser().getProfile().getDepartment());
+        TextView emailView = (TextView) findViewById(R.id.textView9);
+        emailView.setText(Workspace.get_instance().getCurrentUser().getProfile().getEmail());
+        TextView phoneNoView = (TextView) findViewById(R.id.textView10);
+        phoneNoView.setText(Workspace.get_instance().getCurrentUser().getProfile().getPhoneNo());
+        ImageView myImageView = (ImageView) findViewById(R.id.profilePictureImageView);
+        myImageView.setImageResource(R.drawable.profilepic);
 
-        Intent i = getIntent();
-        String UserId = i.getExtras().getString("UserId");
-        System.out.println(UserId);
-        UserUtils userUtils = new UserUtils();
-        com.jsphdev.entities.model.Profile profile = null;
-        try {
-            profile = userUtils.getProfile(UserId,getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (profile!=null){
-            TextView nameView = (TextView) findViewById(R.id.textView7);
-            nameView.setText(profile.getFirstName() + " " + profile.getLastName());
-            TextView deptView = (TextView) findViewById(R.id.textView8);
-            deptView.setText(profile.getDepartment());
-            TextView emailView = (TextView) findViewById(R.id.textView9);
-            emailView.setText(profile.getEmail());
-            TextView phoneNoView = (TextView) findViewById(R.id.textView10);
-            phoneNoView.setText(profile.getPhoneNo());
-            ImageView myImageView = (ImageView) findViewById(R.id.profilePictureImageView);
-            myImageView.setImageResource(R.drawable.profilepic);
-        }
         createEventButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {

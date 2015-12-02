@@ -85,8 +85,8 @@ public class dBEventHandler extends SQLiteOpenHelper {
         double xLocation,yLocation;
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
-            name = (cursor.getString(0));
-            identifier = (Integer.parseInt(cursor.getString(1)));
+            identifier = (Integer.parseInt(cursor.getString(0)));
+            name = (cursor.getString(1));
             startDateStr = cursor.getString(2);
             DateFormat format = new SimpleDateFormat("YYYY-MM-DD HH:mm", Locale.ENGLISH);
             try {
@@ -104,7 +104,8 @@ public class dBEventHandler extends SQLiteOpenHelper {
             yLocation = cursor.getDouble(5);
             location = new Location(xLocation,yLocation);
             if (startDate != null && endDate != null){
-                event = new DoubleEvent(name,identifier,startDate,endDate,location);
+                event = new DoubleEvent(name,startDate,endDate,location);
+                event.setIdentifier(identifier);
             }
         }
         return event;

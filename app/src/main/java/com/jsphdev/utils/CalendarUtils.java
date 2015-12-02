@@ -16,6 +16,15 @@ import com.jsphdev.model.Log;
  * Created by vikramn on 11/14/15.
  */
 public class CalendarUtils implements ICalendarUtils {
+
+    private static CalendarUtils calUtils;
+
+    public static CalendarUtils get_instance(){
+        if(calUtils==null)
+            calUtils = new CalendarUtils();
+        return calUtils;
+    }
+
     @Override
     public List<Event> getAllEvents(Context context) {
         System.out.println("Initializing dbIO");
@@ -60,4 +69,16 @@ public class CalendarUtils implements ICalendarUtils {
     public List<Event> getEventByLocation(Location location) {
         return null;
     }
+
+    @Override
+    public Event getEventById(int identifier,Context context){
+        System.out.println("Initializing dbIO for getEventById");
+        DatabaseIO dbIO = new DatabaseIO(context);
+        System.out.println("Getting allEventById: + " + identifier + " from dbIO");
+        Log log = new Log("Search Event Log","Read Log","Searched Event by id: " + identifier);
+        dbIO.insertLogData(log);
+        return dbIO.getEventById(identifier);
+    }
+
+
 }

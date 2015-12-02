@@ -14,6 +14,7 @@ import com.jsphdev.DBLayout.Event.SearchEvent;
 import com.jsphdev.DBLayout.Profile.CreateProfile;
 import com.jsphdev.DBLayout.Profile.SearchProfile;
 import com.jsphdev.DBLayout.User.CreateUser;
+import com.jsphdev.DBLayout.User.SearchUser;
 import com.jsphdev.abstrct.Event;
 import com.jsphdev.abstrct.User;
 import com.jsphdev.entities.model.Profile;
@@ -112,15 +113,45 @@ public class DatabaseIO {
         return createUser.createUser(username, password, user, context);
     }
 
-    public boolean registerProfile(Profile profile){
+    public boolean registerProfile(User user,Profile profile){
         CreateProfile createProfile = new CreateProfile();
-        return createProfile.createProfile(profile, context);
+        return createProfile.createProfile(user, profile, context);
     }
 
-    public Profile getProfile(String identifier){
+    public Profile getProfile(int identifier){
         SearchProfile searchProfile = new SearchProfile();
-        return searchProfile.searchProfile(identifier,context);
+        return searchProfile.searchProfile(identifier, context);
     }
 
+    public void getUserId(String email, User user){
+        SearchUser searchUser = new SearchUser();
+        searchUser.getUserId(email,user,context);
+    }
 
+    public boolean verifyUser(String username, String password,User user){
+        SearchUser searchUser = new SearchUser();
+        return searchUser.verifyUser(username,password,user,context);
+    }
+
+    public boolean checkUsername(String username,User user){
+        SearchUser searchUser = new SearchUser();
+        return searchUser.checkUsername(username, user, context);
+    }
+
+    public Event getEventById(int identifier){
+        SearchEvent searchEvent = new SearchEvent();
+        return searchEvent.getEventById(identifier, context);
+    }
+
+    public List<Profile> getProfilesRegisteredForEvent(int eventid){
+        return DatabaseHelper.get_instance(context).getProfilesRegisteredForEvent(eventid);
+    }
+
+    public boolean registerUserForEvent(int eventid,int userid){
+        return DatabaseHelper.get_instance(context).registerUserForEvent(eventid, userid);
+    }
+
+    public boolean unRegisterUserForEvent(int eventid,int userid){
+        return DatabaseHelper.get_instance(context).unRegisterUserForEvent(eventid,userid);
+    }
 }

@@ -28,33 +28,71 @@
             android:layout_below="@+id/map">
         </EditText>
 
-        <EditText
-            android:id="@+id/EditEventDate"
+        <Button
+            android:id="@+id/ButtonChooseStartTime"
             android:layout_height="wrap_content"
-            android:hint="Event Date (dd/mm/yy)"
-            android:inputType="datetime"
+            android:text="Choose Start Time"
             android:layout_width="fill_parent"
             android:layout_below="@+id/EditEventName">
-        </EditText>
+        </Button>
 
-
-        <EditText
-            android:id="@+id/EditEventStartTime"
+        <TextView
+            android:id="@+id/TextViewStartTime"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Event Start Time (hh:mm)"
-            android:inputType="datetime"
-            android:layout_width="fill_parent"
-            android:layout_below="@+id/EditEventDate">
-        </EditText>
+            android:layout_below="@+id/ButtonChooseStartTime"
+            android:text="Start Time Selected"
+            />
 
-        <EditText
-            android:id="@+id/EditEventStopTime"
+        <Button
+            android:id="@+id/ButtonChooseStartDate"
             android:layout_height="wrap_content"
-            android:hint="Event End Time (hh:mm)"
-            android:inputType="datetime"
+            android:text="Choose Start Date"
             android:layout_width="fill_parent"
-            android:layout_below="@+id/EditEventStartTime">
-        </EditText>
+            android:layout_below="@+id/TextViewStartTime">
+        </Button>
+
+        <TextView
+            android:id="@+id/TextViewStartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ButtonChooseStartDate"
+            android:text="Start Date Selected"
+            />
+
+
+        <Button
+            android:id="@+id/ButtonChooseStopTime"
+            android:layout_height="wrap_content"
+            android:text="Choose Stop Time"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/TextViewStartDate">
+        </Button>
+
+        <TextView
+            android:id="@+id/TextViewStopTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ButtonChooseStopTime"
+            android:text="Stop Time Selected"
+            />
+
+        <Button
+            android:id="@+id/ButtonChooseStopDate"
+            android:layout_height="wrap_content"
+            android:text="Choose Stop Date"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/TextViewStopTime">
+        </Button>
+
+        <TextView
+            android:id="@+id/TextViewStopDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ButtonChooseStopDate"
+            android:text="Stop Date Selected"
+            />
+
 
         <EditText
             android:id="@+id/EditEventLocation"
@@ -62,7 +100,7 @@
             android:hint="Event Location"
             android:inputType="text"
             android:layout_width="fill_parent"
-            android:layout_below="@+id/EditEventStopTime">
+            android:layout_below="@+id/TextViewStopDate">
         </EditText>
 
         <Button

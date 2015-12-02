@@ -25,19 +25,22 @@ public class SearchResults extends Activity implements AdapterView.OnItemClickLi
         listview.setOnItemClickListener(this);
         Intent i = getIntent();
         List<Event> events = (List<Event>) i.getSerializableExtra("events");
-        CalendarUtils calUtils = new CalendarUtils();
-        System.out.println("calling calUtils");
-        if (events == null)
-            events = calUtils.getAllEvents(this);
+        if (events == null) {
+            System.out.println("calling calUtils");
+            events = CalendarUtils.get_instance().getAllEvents(this);
+        }
         ArrayAdapter<Event> adapter = new ArrayAdapter<Event>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, events);
         listview.setAdapter(adapter);
     }
 
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-        Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
+        Log.i("HelloListView", "You clicked Even: " + id + " at position:" + position);
         // Then you start a new Activity via Intent
+        Event e = (Event) l.getItemAtPosition(position);
+        System.out.println("Event id" + e.getIdentifier());
         Intent intent = new Intent(this, EventPage.class);
+        intent.putExtra("eventid",e.getIdentifier());
         startActivity(intent);
     }
 

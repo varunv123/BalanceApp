@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.jsphdev.abstrct.User;
 import com.jsphdev.entities.model.Student;
+import com.jsphdev.entities.model.Workspace;
 import com.jsphdev.exception.InvalidInputException;
 import com.jsphdev.utils.UserUtils;
 
@@ -22,6 +26,7 @@ public class RegistrationPage extends Activity {
     private String emailId;
     private String password;
     private String phoneNo;
+    boolean online = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +39,26 @@ public class RegistrationPage extends Activity {
                     public void onClick(View v) {
                         try {
                             getRegistrationCredentials(v);
-                            User user = UserUtils.get_instance().createUser(firstName,lastName,andrewId,department,emailId,phoneNo);
-                            UserUtils.get_instance().registerUser(emailId, password, user);
+                            User user = UserUtils.get_instance().createUser(firstName, lastName, andrewId, department, emailId, phoneNo);
+                            if (online)
+                                UserUtils.get_instance().registerUser(emailId, password, user);
+                            else {
+                                Student student = new Student();
+                                boolean userExists = UserUtils.get_instance().checkUsernameLocal(student, emailId, getApplicationContext());
+                                if (!userExists) {
+                                    UserUtils.get_instance().registerUser(emailId, password, user, getApplicationContext());
+                                    UserUtils.get_instance().getUserId(emailId, user, getApplicationContext());
+                                    System.out.println(user.getIdentifier());
+                                    UserUtils.get_instance().registerProfile(user, user.getProfile(), getApplicationContext());
+                                    Workspace.get_instance().setCurrentUser(user);
+                                    Intent intent = new Intent(Workspace.get_instance().getCurrContext(), ProfileActivity.class);
+                                    startActivity(intent);
+                                }
+                                else{
+                                    Toast.makeText(getApplicationContext(), "Local register failed. Username exists.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
                         } catch (Exception e) {
                             Log.d("RegisterException", e.getMessage());
                         }
@@ -43,6 +66,18 @@ public class RegistrationPage extends Activity {
                     }
                 }
         );
+
+        ToggleButton toggleOffline = (ToggleButton) findViewById(R.id.offlineToggle);
+        toggleOffline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    online = true;
+                } else {
+                    online = false;
+                }
+                System.out.println(online);
+            }
+        });
     }
 
     public void getRegistrationCredentials(View v) throws InvalidInputException {

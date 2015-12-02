@@ -18,7 +18,6 @@ public class CreateUser {
     public boolean createUser(String username, String password, User user,Context context){
         System.out.println("In createUser, creating User");
         ContentValues values = new ContentValues();
-        values.put("ID", user.getIdentifier());
         values.put(COLUMN_USERNAME, username);
         values.put(COLUMN_PASSWORD, password);
         System.out.println("In createUser, inserting event into table");

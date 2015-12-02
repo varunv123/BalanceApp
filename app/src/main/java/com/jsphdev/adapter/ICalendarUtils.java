@@ -21,6 +21,7 @@ public interface ICalendarUtils {
     public List<Event> getEventByYear(Date currDate);
     public List<Event> getEventByName(Context context, String name);
     public List<Event> getEventByLocation(Location location);
+    public Event getEventById(int identifier,Context context);
 
 }
 

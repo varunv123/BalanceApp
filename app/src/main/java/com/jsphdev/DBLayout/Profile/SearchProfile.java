@@ -20,9 +20,9 @@ public class SearchProfile {
     public static final String COLUMN_PROFILEPIC = "profilepic";
     public static final String COLUMN_USERID = "user_id";
 
-    public Profile searchProfile(String identifier,Context context){
+    public Profile searchProfile(int identifier,Context context){
         System.out.println("In searchProfile, calling getProfileByIdentifier in dbHelper");
-        String query = String.format("SELECT * FROM " + TABLE_PROFILES + " WHERE " + "ID" + " = \'%s\'",identifier);
+        String query = String.format("SELECT * FROM " + TABLE_PROFILES + " WHERE " + COLUMN_USERID + " = %d",identifier);
         System.out.println(query);
         return DatabaseHelper.get_instance(context).getProfileByIdentifier(query);
     }

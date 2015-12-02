@@ -6,12 +6,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import com.jsphdev.entities.model.Profile;
+import com.jsphdev.entities.model.Student;
 import com.jsphdev.entities.model.Workspace;
 import com.jsphdev.exception.InvalidInputException;
 import com.jsphdev.utils.UserUtils;
 
 public class LoginActivity extends Activity {
+
+    boolean online = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +41,25 @@ public class LoginActivity extends Activity {
                             password = credentialsParts[1];
                             Log.d("Login_EmailId", emailId);
                             Log.d("Login_Password", password);
-                            UserUtils.get_instance().verifyUser(emailId, password);
+                            if (online)
+                                UserUtils.get_instance().verifyUser(emailId, password);
+                            else {
+                                Student student = new Student();
+                                boolean login = UserUtils.get_instance().verifyUserLocal(student, emailId, password, getApplicationContext());
+                                System.out.println(student.getIdentifier());
+                                if (login) {
+                                    String identifier = Integer.toString(student.getIdentifier());
+                                    Profile profile = UserUtils.get_instance().getProfile(student.getIdentifier(), getApplicationContext());
+                                    student.setProfile(profile);
+                                    System.out.println(profile);
+                                    Workspace.get_instance().setCurrentUser(student);
+                                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Local login failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
                         } catch (Exception e) {
                             Log.d("LoginException", e.getMessage());
                         }
@@ -51,6 +77,18 @@ public class LoginActivity extends Activity {
                     }
                 }
         );
+
+        ToggleButton toggleOffline = (ToggleButton) findViewById(R.id.offlineToggle);
+        toggleOffline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    online = true;
+                } else {
+                    online = false;
+                }
+                System.out.println(online);
+            }
+        });
     }
 
     public String getLoginCredentials(View v) throws InvalidInputException {

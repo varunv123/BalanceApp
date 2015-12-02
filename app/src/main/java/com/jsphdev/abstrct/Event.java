@@ -19,14 +19,14 @@ public abstract class Event implements Serializable{
     protected Date startDate;
     protected Date endDate;
     protected Location location;
+    protected int createridentifier;
 
     public Event(){
 
     }
 
-    public Event(String name, int identifier, Date startDate, Date endDate,Location location){
+    public Event(String name, Date startDate, Date endDate,Location location){
         this.name = name;
-        this.identifier = identifier;
         this.startDate = startDate;
         this.endDate = endDate;
         this.location = location;
@@ -52,11 +52,23 @@ public abstract class Event implements Serializable{
         return this.location;
     }
 
+    public void setIdentifier(int identifier){
+        this.identifier = identifier;
+    }
+
 
     abstract public void deleteEvent();
 
     public void updateEvent(Location newLocation){
         this.location = newLocation;
+    }
+
+    public void setCreateridentifier(int createridentifier){
+        this.createridentifier = createridentifier;
+    }
+
+    public int getCreateridentifier(){
+        return this.createridentifier;
     }
 
 

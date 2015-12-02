@@ -13,8 +13,8 @@ public class DoubleEvent extends Event {
     private User secondUser;
     private User created_by;
 
-    public DoubleEvent(String name, int identifier, Date startDate, Date endDate,Location location){
-        super(name, identifier, startDate, endDate,location);
+    public DoubleEvent(String name, Date startDate, Date endDate,Location location){
+        super(name, startDate, endDate,location);
     }
 
     public void setCreated_by(User user){

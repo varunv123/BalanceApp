@@ -29,6 +29,7 @@ public class SearchEvent {
     public static final String COLUMN_ENDDATE = "eventstopdate";
     public static final String COLUMN_LATITUDE = "eventlatitude";
     public static final String COLUMN_LONGITUDE = "eventlongitude";
+    public static final String COLUMN_CREATORID = "creator_id";
 
     public List<Event> getAllEvents(Context context){
         System.out.println("In SearchEvent, calling getAllEvents in dbHelper");
@@ -40,5 +41,9 @@ public class SearchEvent {
         String query = String.format("SELECT * FROM " + TABLE_EVENTS + " WHERE " + COLUMN_EVENTNAME + " = \'%s\'",name);
         System.out.println(query);
         return DatabaseHelper.get_instance(context).getEventByName(query);
+    }
+
+    public Event getEventById(int identifier,Context context){
+        return DatabaseHelper.get_instance(context).getEventById(identifier);
     }
 }

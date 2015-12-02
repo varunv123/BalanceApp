@@ -21,14 +21,23 @@
         android:layout_height="wrap_content"
         android:id="@+id/RegisterEventbutton"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/HomeButton"
+        android:text="Home"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Event Name"
-        android:id="@+id/textView3"
+        android:id="@+id/TextEventName"
         android:layout_below="@+id/Eventmap"
         android:layout_toStartOf="@+id/RegisterEventbutton"
         android:layout_marginTop="30dp" />
@@ -37,18 +46,47 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Creator: "
+        android:id="@+id/TextEventCreator"
+        android:layout_below="@+id/TextEventName"
+        android:layout_alignStart="@+id/TextEventName" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Time"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/textView3"
-        android:layout_alignStart="@+id/textView3" />
+        android:id="@+id/TextEventStartTime"
+        android:layout_below="@+id/TextEventCreator"
+        android:layout_alignStart="@+id/TextEventName" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Time"
+        android:id="@+id/TextEventStopTime"
+        android:layout_below="@+id/TextEventStartTime"
+        android:layout_alignStart="@+id/TextEventName" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Location"
-        android:id="@+id/textView5"
-        android:layout_below="@+id/textView4"
-        android:layout_alignStart="@+id/textView4" />
+        android:id="@+id/TextEventLocation"
+        android:layout_below="@+id/TextEventStopTime"
+        android:layout_alignStart="@+id/TextEventName" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Atendees: "
+        android:id="@+id/TextEventProfiles"
+        android:layout_below="@+id/TextEventLocation"
+        android:layout_alignStart="@+id/TextEventName" />
+
+
 
 </RelativeLayout>

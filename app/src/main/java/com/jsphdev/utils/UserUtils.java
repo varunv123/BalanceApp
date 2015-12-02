@@ -39,6 +39,24 @@ public class UserUtils implements IUserUtils {
         userService.verifyUser(username, password);
     }
 
+    public boolean verifyUserLocal(User user,String username,String password,Context context) throws Exception {
+        DatabaseIO dbIO = new DatabaseIO(context);
+        Log log = new Log("Verify User Local","Read Log","Verified User of name: " + username);
+        dbIO.insertLogData(log);
+        boolean res = dbIO.verifyUser(username, password, user);
+        System.out.println("Verify User: " + res);
+        return res;
+    }
+
+    public boolean checkUsernameLocal(User user,String username,Context context) throws Exception{
+        DatabaseIO dbIO = new DatabaseIO(context);
+        Log log = new Log("Verify User Local","Read Log","Verified User of name: " + username);
+        dbIO.insertLogData(log);
+        boolean res = dbIO.checkUsername(username, user);
+        System.out.println("Verify User: " + res);
+        return res;
+    }
+
 
     public User registerUser(String username, String password, User user) throws Exception {
         UserService userService = new UserService();
@@ -72,8 +90,8 @@ public class UserUtils implements IUserUtils {
         DatabaseIO dbIO = new DatabaseIO(context);
         Log log = new Log("Register User","Insert Log","Saved User of name: " + username);
         dbIO.insertLogData(log);
-        dbIO.registerUser(username, password, user);
-        System.out.println("Registered User");
+        boolean res = dbIO.registerUser(username, password, user);
+        System.out.println("Registered User: " + res);
     }
 
     @Override
@@ -83,16 +101,24 @@ public class UserUtils implements IUserUtils {
         DatabaseIO dbIO = new DatabaseIO(context);
         Log log = new Log("Register ProfileActivity","Insert Log","Saved ProfileActivity of name: " + profile.getFirstName()+", " + profile.getLastName()+".");
         dbIO.insertLogData(log);
-        dbIO.registerProfile(profile);
+        dbIO.registerProfile(user,profile);
         System.out.println("Registered ProfileActivity");
     }
 
     @Override
-    public Profile getProfile(String identifier,Context context) throws Exception {
+    public Profile getProfile(int identifier,Context context) throws Exception {
         DatabaseIO dbIO = new DatabaseIO(context);
         Log log = new Log("Getting ProfileActivity","Read Log","Got User of name: " + identifier+".");
         dbIO.insertLogData(log);
         return dbIO.getProfile(identifier);
+    }
+
+    @Override
+    public void getUserId(String email, User user, Context context) throws Exception {
+        DatabaseIO dbIO = new DatabaseIO(context);
+        Log log = new Log("Getting userid","Read Log","Got Userid of name: " + email+".");
+        dbIO.insertLogData(log);
+        dbIO.getUserId(email,user);
     }
 
 }

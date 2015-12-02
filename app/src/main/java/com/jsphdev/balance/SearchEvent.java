@@ -48,14 +48,13 @@ public class SearchEvent extends FragmentActivity implements OnMapReadyCallback 
                         try{
                             getSearchEventDetails(v);
                             //go to ProfileActivity page
-                            CalendarUtils calUtils = new CalendarUtils();
                             EditText findEventByName = (EditText) findViewById(R.id.SearchEventByName);
                             String eventName = findEventByName.getText().toString();
-                            //List<Event> searchResults = calUtils.getEventByDay();
-                            List<Event> searchResults = calUtils.getEventByName(getApplicationContext(),eventName);
-                            //List<Event> searchResults = calUtils.getEventByDay();
-                            //List<Event> searchResults = calUtils.getEventByDay();
-                            //List<Event> searchResults = calUtils.getEventByDay();
+                            //List<Event> searchResults = CalendarUtils.get_instance().getEventByDay();
+                            List<Event> searchResults = CalendarUtils.get_instance().getEventByName(getApplicationContext(), eventName);
+                            //List<Event> searchResults = CalendarUtils.get_instance().getEventByDay();
+                            //List<Event> searchResults = CalendarUtils.get_instance().getEventByDay();
+                            //List<Event> searchResults = CalendarUtils.get_instance().getEventByDay();
                             Intent intent = new Intent(v.getContext(),SearchResults.class);
                             System.out.println(searchResults.size());
                             intent.putExtra("events",(Serializable) searchResults);

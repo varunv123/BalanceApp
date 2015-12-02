@@ -3,6 +3,7 @@ package com.jsphdev.DBLayout.Profile;
 import android.content.ContentValues;
 import android.content.Context;
 
+import com.jsphdev.abstrct.User;
 import com.jsphdev.database.DatabaseHelper;
 import com.jsphdev.entities.model.Profile;
 
@@ -23,7 +24,7 @@ public class CreateProfile
     public static final String COLUMN_USERID = "user_id";
 
 
-    public boolean createProfile(Profile profile,Context context){
+    public boolean createProfile(User user,Profile profile,Context context){
         System.out.println("In createProfile, creating ProfileActivity");
         ContentValues values = new ContentValues();
         values.put(COLUMN_FIRSTNAME, profile.getFirstName());
@@ -31,6 +32,7 @@ public class CreateProfile
         values.put(COLUMN_EMAIL, profile.getEmail());
         values.put(COLUMN_DEPARTMENT, profile.getDepartment());
         values.put(COLUMN_PHONENO, profile.getPhoneNo());
+        values.put(COLUMN_USERID, user.getIdentifier());
         System.out.println("In createUser, inserting event into table");
         return DatabaseHelper.get_instance(context).insertValueToTable(TABLE_PROFILES,values);
     }

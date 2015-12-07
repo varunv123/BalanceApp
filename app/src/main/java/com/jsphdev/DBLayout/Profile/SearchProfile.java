@@ -8,6 +8,7 @@ import com.jsphdev.entities.model.Profile;
 /**
  * Created by Varun on 11/27/15.
  */
+
 public class SearchProfile {
 
     public static final String TABLE_PROFILES = "profile";

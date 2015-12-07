@@ -122,10 +122,6 @@ public class EventPage extends FragmentActivity implements OnMapReadyCallback {
                     }
                 }
         );
-
-
-
-
     }
 
     @Override

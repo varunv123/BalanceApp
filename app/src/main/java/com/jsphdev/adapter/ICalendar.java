@@ -11,7 +11,7 @@ import com.jsphdev.abstrct.Event;
  * Created by vikramn on 11/13/15.
  */
 public interface ICalendar {
-    public boolean registerEvent(Event event);
+    public boolean createEvent(Event event);
     public boolean registerEvent(Event event,Context context);
     public boolean deRegisterEvent(Event event);
     public List<Event> getEventsOfDay(Date currDate);

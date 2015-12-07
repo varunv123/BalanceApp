@@ -19,8 +19,6 @@ import com.jsphdev.utils.UserUtils;
 
 public class LoginActivity extends Activity {
 
-    boolean online = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +29,6 @@ public class LoginActivity extends Activity {
         loginButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
-                        //get input from user
                         String emailId;
                         String password;
                         try {
@@ -41,18 +38,17 @@ public class LoginActivity extends Activity {
                             password = credentialsParts[1];
                             Log.d("Login_EmailId", emailId);
                             Log.d("Login_Password", password);
-                            if (online)
+                            if (Workspace.get_instance().isOnline()) {
+                                System.out.println("Online");
                                 UserUtils.get_instance().verifyUser(emailId, password);
+                            }
                             else {
+                                System.out.println("Offline");
                                 Student student = new Student();
-                                boolean login = UserUtils.get_instance().verifyUserLocal(student, emailId, password, getApplicationContext());
-                                System.out.println(student.getIdentifier());
-                                if (login) {
-                                    String identifier = Integer.toString(student.getIdentifier());
-                                    Profile profile = UserUtils.get_instance().getProfile(student.getIdentifier(), getApplicationContext());
-                                    student.setProfile(profile);
-                                    System.out.println(profile);
-                                    Workspace.get_instance().setCurrentUser(student);
+                                Workspace.get_instance().setCurrentUser(student);
+                                boolean isUserVerified = UserUtils.get_instance().verifyUserLocal(emailId, password);
+                                if (isUserVerified) {
+                                    Workspace.get_instance().getCurrentUser().setProfile(UserUtils.get_instance().getProfile(student.getIdentifier(), getApplicationContext()));
                                     Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                                     startActivity(intent);
                                 } else {
@@ -72,8 +68,12 @@ public class LoginActivity extends Activity {
                 new Button.OnClickListener() {
                     public void onClick(View v) {
                         //go to Registration page
-                        Intent intent = new Intent(v.getContext(),RegistrationPage.class);
-                        startActivity(intent);
+                        if(!Workspace.get_instance().isOnline())
+                            Toast.makeText(getBaseContext(), "Registeration only allowed in online mode", Toast.LENGTH_LONG).show();
+                        else{
+                            Intent intent = new Intent(v.getContext(), RegistrationPage.class);
+                            startActivity(intent);
+                        }
                     }
                 }
         );
@@ -82,11 +82,10 @@ public class LoginActivity extends Activity {
         toggleOffline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    online = true;
+                    Workspace.get_instance().setIsOnline(true);
                 } else {
-                    online = false;
+                    Workspace.get_instance().setIsOnline(false);
                 }
-                System.out.println(online);
             }
         });
     }
@@ -100,7 +99,7 @@ public class LoginActivity extends Activity {
         input = givenLoginEmailId.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenLoginEmailId.setError("Invalid input");
-            throw new InvalidInputException();
+            throw new InvalidInputException("Invalid username input");
         }
         else
             credentials = input;
@@ -111,7 +110,7 @@ public class LoginActivity extends Activity {
         input = givenLoginPassword.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenLoginPassword.setError("Invalid input");
-            throw new InvalidInputException();
+            throw new InvalidInputException("Invalid password input");
         }
         else
             credentials += input;

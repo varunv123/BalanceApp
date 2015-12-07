@@ -8,7 +8,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jsphdev.entities.model.Calendar;
 import com.jsphdev.entities.model.Workspace;
+import com.jsphdev.utils.EventUtils;
 import com.jsphdev.utils.UserUtils;
 
 import org.w3c.dom.Text;
@@ -37,7 +39,7 @@ public class
         createEventButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
-                        Intent intent = new Intent(v.getContext(), CreateEvent.class);
+                        Intent intent = new Intent(v.getContext(), CreateEvent_Location.class);
                         startActivity(intent);
                     }
                 }
@@ -47,8 +49,7 @@ public class
         searchEventButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
-                        Intent intent = new Intent(v.getContext(), SearchEvent.class);
-                        startActivity(intent);
+                        EventUtils.get_instance().getLatestEvents();
                     }
                 }
         );

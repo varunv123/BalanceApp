@@ -2,6 +2,7 @@ package com.jsphdev.ws.remote;
 
 
 import android.content.Intent;
+import android.media.MediaRouter;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
@@ -10,9 +11,13 @@ import com.jsphdev.abstrct.User;
 import com.jsphdev.adapter.WebService.IUserRemoteService;
 import com.jsphdev.adapter.WebService.IWebServiceConstants;
 import com.jsphdev.balance.ProfileActivity;
+import com.jsphdev.database.DatabaseIO;
+import com.jsphdev.entities.model.Calendar;
 import com.jsphdev.entities.model.Profile;
 import com.jsphdev.entities.model.Student;
 import com.jsphdev.entities.model.Workspace;
+import com.jsphdev.model.Log;
+import com.jsphdev.utils.UserUtils;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -26,10 +31,11 @@ import org.json.JSONObject;
 /**
  * Created by vikramn on 11/14/15.
  */
+
 public class UserService implements IUserRemoteService {
 
     @Override
-    public void verifyUser(String userName, String passWord) {
+    public void verifyUser(final String userName, final String passWord) {
         RequestParams params = new RequestParams();
         params.put("username", userName);
         params.put("password", passWord);
@@ -45,6 +51,8 @@ public class UserService implements IUserRemoteService {
                         Student student = new Student();
                         student.setIdentifier(Integer.parseInt(obj.getString("userid")));
                         Workspace.get_instance().setCurrentUser(student);
+                        System.out.println("*****" + Workspace.get_instance().getCurrentUser().getIdentifier());
+                        UserUtils.get_instance().createDBUser(userName, passWord);
                         UserService userService = new UserService();
                         userService.getProfile();
                     } else {
@@ -53,7 +61,9 @@ public class UserService implements IUserRemoteService {
                 } catch (JSONException e) {
                     Toast.makeText(Workspace.get_instance().getCurrContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
-
+                } catch (Exception e){
+                    Toast.makeText(Workspace.get_instance().getCurrContext(), "Error Occured [Inputting into DB]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
                 }
             }
 
@@ -77,7 +87,7 @@ public class UserService implements IUserRemoteService {
     }
 
     @Override
-    public void registerUser(String userName, String passWord, final User user) {
+    public void registerUser(final String userName, final String passWord) {
         System.out.println("Registering User");
         System.out.println(userName);
         System.out.println(passWord);
@@ -94,17 +104,19 @@ public class UserService implements IUserRemoteService {
                 try {
                     JSONObject obj = new JSONObject(response);
                     if (obj.getBoolean("status")) {
-                        user.setIdentifier(Integer.parseInt(obj.getString("userid")));
-                        Workspace.get_instance().setCurrentUser(user);
+                        Workspace.get_instance().getCurrentUser().setIdentifier(Integer.parseInt(obj.getString("userid")));
                         UserService userService = new UserService();
-                        userService.registerProfile(user.getProfile());
+                        UserUtils.get_instance().createDBUser(userName, passWord);
+                        userService.registerProfile( Workspace.get_instance().getCurrentUser().getProfile());
                     } else {
                         Toast.makeText(Workspace.get_instance().getCurrContext(), "Registeration Failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     Toast.makeText(Workspace.get_instance().getCurrContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
-
+                } catch (Exception e){
+                    Toast.makeText(Workspace.get_instance().getCurrContext(), "Error Occured [Inputting into DB]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
                 }
             }
 
@@ -152,17 +164,13 @@ public class UserService implements IUserRemoteService {
     public void registerProfile(final Profile profile){
         System.out.println("Registering profile");
         RequestParams params = new RequestParams();
-        System.out.println(Workspace.get_instance().getCurrentUser().getIdentifier());
         params.put("userid", String.valueOf(Workspace.get_instance().getCurrentUser().getIdentifier()));
-        System.out.println("*****" + profile.getDepartment());
-        System.out.println("*****" + profile.getPhoneNo());
         params.put("department",profile.getDepartment());
         params.put("andrewid",profile.getAndrewId());
         params.put("email",profile.getEmail());
         params.put("firstname",profile.getFirstName());
         params.put("lastname",profile.getLastName());
         params.put("phoneno", profile.getPhoneNo());
-        System.out.println(params);
         String url = IWebServiceConstants.REGISTER_PROFILE_URL;
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -173,7 +181,7 @@ public class UserService implements IUserRemoteService {
                     System.out.println(response);
                     JSONObject obj = new JSONObject(response);
                     if (obj.getBoolean("status")) {
-                        Workspace.get_instance().getCurrentUser().setProfile(profile);
+                        UserUtils.get_instance().createDBProfile();
                         Toast.makeText(Workspace.get_instance().getCurrContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(Workspace.get_instance().getCurrContext(), ProfileActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -184,7 +192,9 @@ public class UserService implements IUserRemoteService {
                 } catch (JSONException e) {
                     Toast.makeText(Workspace.get_instance().getCurrContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
-
+                } catch (Exception e){
+                    Toast.makeText(Workspace.get_instance().getCurrContext(), "Error Occured [Inputting into DB]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
                 }
             }
 
@@ -232,10 +242,13 @@ public class UserService implements IUserRemoteService {
                         profile.setAndrewId(obj.getString("andrewid"));
                         Workspace.get_instance().getCurrentUser().setProfile(profile);
 
-                        Toast.makeText(Workspace.get_instance().getCurrContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(Workspace.get_instance().getCurrContext(), ProfileActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        Workspace.get_instance().getCurrContext().startActivity(intent);
+                        Calendar calendar = new Calendar();
+                        Workspace.get_instance().getCurrentUser().setCalendar(calendar);
+
+                        //Update the profile on local
+                        EventService eventService = new EventService();
+                        eventService.getAllUserEvents();
+
                     } else {
                         Toast.makeText(Workspace.get_instance().getCurrContext(), "Profile Fetch Failed", Toast.LENGTH_LONG).show();
                     }

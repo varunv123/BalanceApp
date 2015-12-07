@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public abstract class User {
     protected int identifier;
+    protected int localIdentifier;
     protected Profile profile;
     protected Calendar calendar;
     static protected ArrayList<User> allUsers;
@@ -17,6 +18,10 @@ public abstract class User {
     public int getIdentifier() {
         return identifier;
     }
+
+    public int getLocalIdentifier () { return localIdentifier;}
+
+    public void setLocalIdentifier(int identifier) { this.localIdentifier = localIdentifier; }
 
     public void setIdentifier(int identifier) {
         this.identifier = identifier;

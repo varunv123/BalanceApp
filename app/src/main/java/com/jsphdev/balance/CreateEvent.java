@@ -4,22 +4,22 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,24 +27,29 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jsphdev.abstrct.Event;
-import com.jsphdev.entities.model.DoubleEvent;
+import com.jsphdev.entities.model.Workspace;
 import com.jsphdev.exception.InvalidInputException;
+import com.jsphdev.maps.ParserTask;
+import com.jsphdev.maps.PlacesTask;
+import com.jsphdev.utils.CalendarUtils;
+import com.jsphdev.utils.EventUtils;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class CreateEvent extends FragmentActivity implements OnMapReadyCallback {
 
     private SupportMapFragment mapFragment;
-    private GoogleMap gMap1;
+    private LatLng eventPosition;
+    private GoogleMap map;
     private DatePicker datePicker;
     private Calendar calendar;
     private static TextView textViewStartTime,textViewStopTime,textViewStartDate,textViewStopDate;
+    private static EditText locationName;
+    private AutoCompleteTextView atvPlaces;
+    private PlacesTask placesTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,13 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
             mapFragment.getMapAsync(this);
         }
 
+        eventPosition = new LatLng(Double.parseDouble(getIntent().getStringExtra("latitude")),Double.parseDouble(getIntent().getStringExtra("longitude")));
+        String locationString = getLocationName(eventPosition);
+        System.out.println(eventPosition.toString());
+        System.out.println("After setting the name " + locationString);
+        locationName = (EditText)findViewById(R.id.LocationName);
+        locationName.setText(locationString);
+
         Button ButtonSendFeedback = (Button)findViewById(R.id.ButtonSendFeedback);
         ButtonSendFeedback.setOnClickListener(
                 new Button.OnClickListener() {
@@ -68,50 +80,30 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
 
                         try {
                             getEventDetails(v);
-                            //Toast to notify successful event creation
 
-                            //go to ProfileActivity page
-//                            java.text.DateFormat format = new SimpleDateFormat("yyyy-MM-DD HH:mm", Locale.ENGLISH);
-//                            Date startDate = null;
-//                            Date endDate = null;
-//                            try {
-//                                startDate = format.parse("2013-03-02 10:10");
-//                                endDate = format.parse("2013-04-03 11:11");
-//                            } catch (ParseException e) {
-//                                e.printStackTrace();
-//                            }
-
-//                            EditText startDateEditText = (EditText) findViewById(R.id.EditEventDate);
-//                            String startDateString = startDateEditText.getText().toString();
-//                            EditText startTimeEditText = (EditText) findViewById(R.id.EditEventStartTime);
-//                            String startTimeString = startTimeEditText.getText().toString();
-//                            EditText stopTimeEditText = (EditText) findViewById(R.id.EditEventStopTime);
-//                            String stopTimeString = stopTimeEditText.getText().toString();
                             String startDateString = textViewStartDate.getText().toString();
                             String stopDateString = textViewStopDate.getText().toString();
                             String startTimeString = textViewStartTime.getText().toString();
                             String stopTimeString = textViewStopTime.getText().toString();
-                            Date startDate = getDateObject(startDateString + "," + startTimeString);
-                            Date endDate = getDateObject(stopDateString + "," + stopTimeString);
-
-                            EditText givenLocation = (EditText) findViewById(R.id.EditEventLocation);
-                            String locationString = givenLocation.getText().toString();
-                            //com.jsphdev.entities.model.Location location = new com.jsphdev.entities.model.Location(20.1,300.1);
-                            com.jsphdev.entities.model.Location location = getLocationObject(locationString);
+                            String locationString = locationName.getText().toString();
+                            com.jsphdev.entities.model.Location location = CalendarUtils.get_instance().getLocationObject(locationString,eventPosition);
                             EditText givenEventName = (EditText) findViewById(R.id.EditEventName);
                             String eventName = givenEventName.getText().toString();
-                            Event event = new DoubleEvent(eventName,startDate,endDate,location);
-                            System.out.println(event);
-                            com.jsphdev.entities.model.Calendar calendar = new com.jsphdev.entities.model.Calendar();
-                            System.out.println("Trying to regitser event");
-                            calendar.registerEvent(event, getApplicationContext());
-                            Toast.makeText(getApplicationContext(), "Event Created successful.",
-                                    Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(v.getContext(), ProfileActivity.class);
-                            intent.putExtra("UserId","");
-                            startActivity(intent);
+
+                            System.out.println("Coming here");
+                            EventUtils utils = new EventUtils();
+                            Event event = utils.createBaseDoubleEvent(eventName, Workspace.get_instance().getCurrentUser().getIdentifier(), location,
+                                    startDateString + "," + startTimeString, stopDateString + "," + stopTimeString);
+                            utils.createEvent(event);
                         } catch (InvalidInputException e) {
                             Log.e("CreateEventActivity", e.getMessage());
+
+                            if (e.getMessage().equalsIgnoreCase("Invalid date input")) {
+                                textViewStartDate.setError("Invalid date input");
+                                textViewStopDate.setError("Invalid date input");
+                                textViewStartTime.setError("Invalid date input");
+                                textViewStopTime.setError("Invalid date input");
+                            }
                         }
                     }
                 }
@@ -133,7 +125,6 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
         textViewStopTime = (TextView) findViewById(R.id.TextViewStopTime);
         textViewStartDate = (TextView) findViewById(R.id.TextViewStartDate);
         textViewStopDate = (TextView) findViewById(R.id.TextViewStopDate);
-
     }
 
     View.OnClickListener getStartTime = new View.OnClickListener() {
@@ -181,6 +172,29 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
     }
 
 
+    private String getLocationName(LatLng position){
+        Geocoder geocoder;
+        List<Address> addresses;
+        try {
+            geocoder = new Geocoder(this, Locale.getDefault());
+
+            addresses = geocoder.getFromLocation(position.latitude, position.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            //String city = addresses.get(0).getLocality();
+            //String state = addresses.get(0).getAdminArea();
+            //String country = addresses.get(0).getCountryName();
+            //String postalCode = addresses.get(0).getPostalCode();
+            //String knownName = addresses.get(0).getFeatureName();
+            return address;
+
+        } catch (IOException e){
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+
     public void getEventDetails(View v) throws InvalidInputException{
         String eventName;
         String eventStartTime;
@@ -192,73 +206,29 @@ public class CreateEvent extends FragmentActivity implements OnMapReadyCallback 
         input = givenEventName.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenEventName.setError("Invalid input");
-            throw new InvalidInputException();
+            throw new InvalidInputException("Invalid input");
         }
         else
             eventName = input;
-
-
-        EditText givenLocation = (EditText) findViewById(R.id.EditEventLocation);
-        input = givenLocation.getText().toString();
-        if ((input == null) || input.isEmpty()){
-            givenLocation.setError("Invalid input");
-            throw new InvalidInputException();
-        }
-        else
-            eventLocation = input;
-
     }
 
 
     @Override
     public void onMapReady(GoogleMap map) {
-        map.setMyLocationEnabled(true);
-        Location location = map.getMyLocation();
-        LatLng myLocation;
-        System.out.println("hiiiii");
-        System.out.println(location);
-        if (location != null){
-            myLocation = new LatLng(location.getLatitude(),
-                    location.getLongitude());
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16));
+        this.map = map;
+        if(eventPosition!=null){
+            map.addMarker(new MarkerOptions()
+                    .position(eventPosition)
+                    .title("Your selection")
+                    .draggable(true));
+            map.moveCamera(CameraUpdateFactory.newLatLng(eventPosition));
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(eventPosition, 17));
         }
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(10, 10))
-                .title("Event Location")
-                .draggable(true));
-    }
-
-    public Date getDateObject (String dateTime) throws InvalidInputException{
-        Date date = null;
-        try{
-            java.text.DateFormat format = new SimpleDateFormat("dd/MM/yy,HH:mm", Locale.ENGLISH);
-            date = format.parse(dateTime);
-            System.out.println("The date object is printed like this: " + date.toString());
-        }catch (java.text.ParseException e) {
-            e.printStackTrace();
-            textViewStartDate.setError("Invalid date input");
-            textViewStopDate.setError("Invalid date input");
-            textViewStartTime.setError("Invalid date input");
-            textViewStopTime.setError("Invalid date input");
-            throw new InvalidInputException();
+        else {
+            LatLng pittsburgh = new LatLng(40.4397, -79.9764);
+            map.moveCamera(CameraUpdateFactory.newLatLng(pittsburgh));
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(pittsburgh, 17));
         }
-        return date;
-    }
-
-    public com.jsphdev.entities.model.Location getLocationObject(String eventLocation){
-        com.jsphdev.entities.model.Location location = new com.jsphdev.entities.model.Location();
-        try{
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocationName(eventLocation, 1);
-            Address address = addresses.get(0);
-            location.setxCoordinate(address.getLongitude());
-            location.setyCoordinate(address.getLatitude());
-            location.setName(eventLocation);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        System.out.println("The location object is printed like this: " + location.toString());
-        return location;
     }
 
     public static class BalanceStartTimePicker extends DialogFragment

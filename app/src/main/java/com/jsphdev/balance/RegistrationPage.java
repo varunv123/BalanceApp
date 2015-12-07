@@ -26,7 +26,6 @@ public class RegistrationPage extends Activity {
     private String emailId;
     private String password;
     private String phoneNo;
-    boolean online = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,55 +39,23 @@ public class RegistrationPage extends Activity {
                         try {
                             getRegistrationCredentials(v);
                             User user = UserUtils.get_instance().createUser(firstName, lastName, andrewId, department, emailId, phoneNo);
-                            if (online)
-                                UserUtils.get_instance().registerUser(emailId, password, user);
-                            else {
-                                Student student = new Student();
-                                boolean userExists = UserUtils.get_instance().checkUsernameLocal(student, emailId, getApplicationContext());
-                                if (!userExists) {
-                                    UserUtils.get_instance().registerUser(emailId, password, user, getApplicationContext());
-                                    UserUtils.get_instance().getUserId(emailId, user, getApplicationContext());
-                                    System.out.println(user.getIdentifier());
-                                    UserUtils.get_instance().registerProfile(user, user.getProfile(), getApplicationContext());
-                                    Workspace.get_instance().setCurrentUser(user);
-                                    Intent intent = new Intent(Workspace.get_instance().getCurrContext(), ProfileActivity.class);
-                                    startActivity(intent);
-                                }
-                                else{
-                                    Toast.makeText(getApplicationContext(), "Local register failed. Username exists.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
+                            Workspace.get_instance().setCurrentUser(user);
+                            UserUtils.get_instance().registerUser(emailId, password);
                         } catch (Exception e) {
                             Log.d("RegisterException", e.getMessage());
                         }
-
                     }
                 }
         );
-
-        ToggleButton toggleOffline = (ToggleButton) findViewById(R.id.offlineToggle);
-        toggleOffline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    online = true;
-                } else {
-                    online = false;
-                }
-                System.out.println(online);
-            }
-        });
     }
 
     public void getRegistrationCredentials(View v) throws InvalidInputException {
-
         String input;
-
         EditText givenFirstName = (EditText) findViewById(R.id.RegisterfirstName);
         input = givenFirstName.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenFirstName.setError("Invalid input");
-            throw new InvalidInputException();
+            throw new InvalidInputException("Invalid First Name input");
         }
         else
             firstName = input;
@@ -97,7 +64,7 @@ public class RegistrationPage extends Activity {
         input = givenLastName.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenLastName.setError("Invalid input");
-            throw new InvalidInputException();
+            throw new InvalidInputException("Invalid Last Name input");
         }
         else
             lastName = input;
@@ -106,7 +73,7 @@ public class RegistrationPage extends Activity {
         input = givenAndrewId.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenAndrewId.setError("Invalid input");
-            throw new InvalidInputException();
+            throw new InvalidInputException("Invalid andrew id input");
         }
         else
             andrewId = input;
@@ -115,7 +82,7 @@ public class RegistrationPage extends Activity {
         input = givenEmailId.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenEmailId.setError("Invalid input");
-            throw new InvalidInputException();
+            throw new InvalidInputException("Invalid Email input");
         }
         else
             emailId = input;
@@ -124,7 +91,7 @@ public class RegistrationPage extends Activity {
         input = givenPassword.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenPassword.setError("Invalid input");
-            throw new InvalidInputException();
+            throw new InvalidInputException("Invalid password input");
         }
         else
             password = input;
@@ -133,7 +100,7 @@ public class RegistrationPage extends Activity {
         input = givenDepartment.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenPassword.setError("Invalid input");
-            throw new InvalidInputException();
+            throw new InvalidInputException("Invalid department input");
         }
         else
             department = input;
@@ -142,7 +109,7 @@ public class RegistrationPage extends Activity {
         input = givenPhoneNo.getText().toString();
         if ((input == null) || input.isEmpty()){
             givenPassword.setError("Invalid input");
-            throw new InvalidInputException();
+            throw new InvalidInputException("Invalid Phone no input");
         }
         else
             phoneNo = input;

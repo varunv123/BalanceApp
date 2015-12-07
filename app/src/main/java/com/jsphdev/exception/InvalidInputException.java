@@ -5,15 +5,13 @@ package com.jsphdev.exception;
  */
 public class InvalidInputException extends Exception{
 
-    public InvalidInputException(){
+    private String message;
+    public InvalidInputException(String message){
         super();
+        this.message = message;
     }
 
-    /**
-     * Returns the error message.
-     */
-    public String getMessage() {
-        return "Invalid Input";
+    public String getMessage(){
+        return message;
     }
-
 }

@@ -35,7 +35,24 @@ public class Calendar implements ICalendar {
             System.out.println("In Calendar, trying to reg event dbIO");
             Log log = new Log("Create Event Log","Insert Log","Created Event: " + event.getName());
             dbIO.insertLogData(log);
-            return dbIO.registerEvent(event);
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    @Override
+    public boolean createEvent(Event event) {
+        System.out.println("In create event");
+        try {
+            this.eventList.add(event);
+            DatabaseIO dbIO = new DatabaseIO(Workspace.get_instance().getCurrContext());
+            dbIO.open();
+            Log log = new Log("Create Event Log","Insert Log","Created Event: " + event.getName());
+            dbIO.insertLogData(log);
+            return dbIO.createEvent(event);
         } catch (Exception e){
             e.printStackTrace();
             return false;
@@ -51,9 +68,6 @@ public class Calendar implements ICalendar {
             return false;
         }
     }
-
-    @Override
-    public boolean registerEvent(Event event){return false;}
 
     @Override
     public List<Event> getEventsOfDay(Date currDate) {
@@ -72,4 +86,22 @@ public class Calendar implements ICalendar {
 
     @Override
     public void refreshCalendar(){};
+
+    public List<Event> getEventList(){ return eventList; }
+
+    public Event getEventFromList(int eventId){
+        for(Event event:eventList){
+            if(event.getIdentifier()==eventId)
+                return event;
+        }
+        return null;
+    }
+
+    public boolean isEventRegistered(Event event){
+        for(Event e:eventList){
+            if(e.getIdentifier()==event.getIdentifier())
+                return true;
+        }
+        return false;
+    }
 }

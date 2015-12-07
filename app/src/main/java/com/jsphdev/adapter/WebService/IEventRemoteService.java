@@ -11,12 +11,15 @@ import com.jsphdev.abstrct.User;
  */
 public interface IEventRemoteService {
 
-    public int createRemoteEvent(Event event);
+    public void createRemoteEvent(Event event);
     public void deleteRemoteEvent(Event event);
-    public void registerRemoteEven(Event event, User user);
+    public void registerRemoteEvent(int eventId, int userId);
     public void deRegisterRemoteEvent(Event event, User user);
+
     public List<Event> getAllRemoteEvents();
-    public List<Event> getAllRegisteredRemoteEvents(User user);
+    public void getAllUserEvents();
+    public void getLatestEvents();
+
     public List<Event> getRemoteEventsByDay(Date currDate);
     public List<Event> getRemoteEventsByMonth(Date currDate);
     public List<Event> getRemoteEventsByYear(Date currDate);

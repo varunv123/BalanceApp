@@ -20,6 +20,7 @@ import com.jsphdev.abstrct.User;
 import com.jsphdev.entities.model.Profile;
 import com.jsphdev.exception.CustomReadException;
 import com.jsphdev.model.Log;
+import com.jsphdev.utils.UserUtils;
 
 /**
  * Created by vikramn on 11/13/15.
@@ -28,12 +29,6 @@ public class DatabaseIO {
 
     public static final String TABLE_EVENTS = "events";
 
-    public static final String COLUMN_EVENTNAME = "eventname";
-    public static final String COLUMN_IDENTTIFIER = "eventidentifier";
-    public static final String COLUMN_STARTDATE = "eventstartdate";
-    public static final String COLUMN_ENDDATE = "eventstopdate";
-    public static final String COLUMN_LATITUDE = "eventlatitude";
-    public static final String COLUMN_LONGITUDE = "eventlongitude";
     private Context context;
 
     public DatabaseIO(Context context)
@@ -90,11 +85,12 @@ public class DatabaseIO {
         return logList;
     }
 
-    public boolean registerEvent(Event event){
+    public boolean createEvent(Event event){
         System.out.println("In dbIO, registering");
         CreateEvent createEvent = new CreateEvent();
-        return createEvent.createEvent(event,context);
+        return createEvent.createEvent(event,context,false);
     }
+
 
     public List<Event> getAllEvents(){
         SearchEvent searchEvent = new SearchEvent();
@@ -108,14 +104,14 @@ public class DatabaseIO {
         return searchEvent.getEventByName(context, name);
     }
 
-    public boolean registerUser(String username, String password, User user){
+    public boolean createDBUser(String username, String password){
         CreateUser createUser = new CreateUser();
-        return createUser.createUser(username, password, user, context);
+        return createUser.createUser(username, password);
     }
 
-    public boolean registerProfile(User user,Profile profile){
+    public boolean createProfile(){
         CreateProfile createProfile = new CreateProfile();
-        return createProfile.createProfile(user, profile, context);
+        return createProfile.createProfile();
     }
 
     public Profile getProfile(int identifier){
@@ -128,9 +124,9 @@ public class DatabaseIO {
         searchUser.getUserId(email,user,context);
     }
 
-    public boolean verifyUser(String username, String password,User user){
+    public boolean verifyUser(String username, String password){
         SearchUser searchUser = new SearchUser();
-        return searchUser.verifyUser(username,password,user,context);
+        return searchUser.verifyUser(username,password,context);
     }
 
     public boolean checkUsername(String username,User user){

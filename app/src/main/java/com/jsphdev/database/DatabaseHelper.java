@@ -11,6 +11,7 @@ import com.jsphdev.abstrct.User;
 import com.jsphdev.entities.model.DoubleEvent;
 import com.jsphdev.entities.model.Location;
 import com.jsphdev.entities.model.Profile;
+import com.jsphdev.entities.model.Workspace;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,8 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_PROFILES = "profile";
     public static final String TABLE_EVENTUSERS = "eventusers";
 
-
-
+    public static final String COLUMN_LOCATION_NAME = "eventlocationname";
     public static final String COLUMN_EVENTNAME = "eventname";
     public static final String COLUMN_STARTDATE = "eventstartdate";
     public static final String COLUMN_ENDDATE = "eventstopdate";
@@ -78,40 +78,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "(_id integer primary key autoincrement," +
                 "log_name text, log_type text, log_message text);";
         db.execSQL(createTableQuery);
+
         String CREATE_EVENTS_TABLE = "CREATE TABLE " +
                 TABLE_EVENTS + "( ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_EVENTNAME
-                + " TEXT," + COLUMN_STARTDATE
-                + " TEXT," + COLUMN_ENDDATE + " TEXT," + COLUMN_LATITUDE
-                + " REAL," + COLUMN_LONGITUDE + " REAL,"
-                + COLUMN_CREATORID + " INTEGER,"
-                + "FOREIGN KEY (" + COLUMN_CREATORID + ") REFERENCES " + TABLE_PROFILES + "(" + COLUMN_USERID + ") "
+                + COLUMN_EVENTNAME + " TEXT,"
+                + COLUMN_STARTDATE + " TEXT,"
+                + COLUMN_ENDDATE + " TEXT,"
+                + COLUMN_LOCATION_NAME + " TEXT, "
+                + COLUMN_LATITUDE + " REAL,"
+                + COLUMN_LONGITUDE + " REAL,"
+                + COLUMN_CREATORID + " INTEGER"
                 +");";
         db.execSQL(CREATE_EVENTS_TABLE);
+
         String CREATE_USERS_TABLE = "CREATE TABLE " +
                 TABLE_USERS + "( ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_USERNAME
-                + " TEXT," + COLUMN_PASSWORD + " TEXT" + ")";
+                + COLUMN_USERNAME + " TEXT,"
+                + COLUMN_PASSWORD + " TEXT" + ")";
         db.execSQL(CREATE_USERS_TABLE);
+
         String CREATE_PROFILE_TABLE = "CREATE TABLE " +
                 TABLE_PROFILES + "( ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_FIRSTNAME
-                + " TEXT, " + COLUMN_LASTNAME + " TEXT, "
-                + COLUMN_DEPARTMENT + " TEXT, " + COLUMN_EMAIL + " TEXT,"
+                + COLUMN_FIRSTNAME + " TEXT, "
+                + COLUMN_LASTNAME + " TEXT, "
+                + COLUMN_DEPARTMENT + " TEXT, "
+                + COLUMN_EMAIL + " TEXT,"
                 + COLUMN_PHONENO + " TEXT,"
                 + COLUMN_ANDREWID + " TEXT,"
                 + COLUMN_PROFILEPIC + " TEXT,"
                 + COLUMN_USERID + " INTEGER,"
-                + "FOREIGN KEY(" + COLUMN_USERID + ") REFERENCES "
-                + TABLE_USERS + "(ID) "+ ")";
+                + "FOREIGN KEY(" + COLUMN_USERID + ") REFERENCES " + TABLE_USERS + "(ID) "
+                + ")";
         System.out.println(CREATE_PROFILE_TABLE);
         db.execSQL(CREATE_PROFILE_TABLE);
+
         String CREATE_EVENTUSERS_TABLE = "CREATE TABLE " +
                 TABLE_EVENTUSERS + "( ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_EVENTID
-                + " INTEGER," + COLUMN_PROFILEID + " INTEGER,"
+                + COLUMN_EVENTID + " INTEGER,"
+                + COLUMN_USERID + " INTEGER,"
                 + "FOREIGN KEY (" + COLUMN_EVENTID + ") REFERENCES " + TABLE_EVENTS + "(ID),"
-                + "FOREIGN KEY (" + COLUMN_PROFILEID + ") REFERENCES " + TABLE_PROFILES + "(" + COLUMN_USERID + ") "
+                + "FOREIGN KEY (" + COLUMN_USERID + ") REFERENCES " + TABLE_USERS + "(ID)"
                 + ");";
         db.execSQL(CREATE_EVENTUSERS_TABLE);
         System.out.println("Created Tables");
@@ -300,7 +306,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public boolean verifyUser(String email,String password, User user){
+    public boolean verifyUser(String email,String password){
         System.out.println("Getting userid");
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String query = String.format("SELECT ID FROM " + TABLE_USERS + " WHERE " + COLUMN_USERNAME + " = \'%s\'"
@@ -312,7 +318,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
             userid = cursor.getInt(0);
             System.out.println("got userid" + userid);
-            user.setIdentifier(userid);
+            Workspace.get_instance().getCurrentUser().setLocalIdentifier(userid);
             db.close();
             return true;
         }

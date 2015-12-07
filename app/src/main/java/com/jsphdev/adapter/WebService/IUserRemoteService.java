@@ -10,7 +10,7 @@ import com.jsphdev.abstrct.User;
 public interface IUserRemoteService {
 
     public void verifyUser(String userName, String passWord);
-    public void registerUser(String userName,String passWord,User user);
+    public void registerUser(String userName,String passWord);
     public int removeUser(User user);
     public List<User> getAllUser();
     public List<User> getUserByUserName(String username);

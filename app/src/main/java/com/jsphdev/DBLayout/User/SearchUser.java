@@ -14,8 +14,8 @@ public class SearchUser {
         DatabaseHelper.get_instance(context).getUserId(email,user);
     }
 
-    public boolean verifyUser(String email, String password, User user,Context context){
-        return DatabaseHelper.get_instance(context).verifyUser(email,password,user);
+    public boolean verifyUser(String email, String password,Context context){
+        return DatabaseHelper.get_instance(context).verifyUser(email,password);
     }
 
     public boolean checkUsername(String email, User user,Context context){

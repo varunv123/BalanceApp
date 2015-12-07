@@ -13,7 +13,6 @@ import com.jsphdev.database.DatabaseIO;
 import com.jsphdev.entities.model.Profile;
 import com.jsphdev.model.Log;
 import com.jsphdev.ws.remote.UserService;
-import com.jsphdev.ws.remote.WebServiceClient;
 
 
 /**
@@ -39,17 +38,17 @@ public class UserUtils implements IUserUtils {
         userService.verifyUser(username, password);
     }
 
-    public boolean verifyUserLocal(User user,String username,String password,Context context) throws Exception {
-        DatabaseIO dbIO = new DatabaseIO(context);
+    public boolean verifyUserLocal(String username,String password) throws Exception {
+        DatabaseIO dbIO = new DatabaseIO(Workspace.get_instance().getCurrContext());
         Log log = new Log("Verify User Local","Read Log","Verified User of name: " + username);
         dbIO.insertLogData(log);
-        boolean res = dbIO.verifyUser(username, password, user);
+        boolean res = dbIO.verifyUser(username, password);
         System.out.println("Verify User: " + res);
         return res;
     }
 
-    public boolean checkUsernameLocal(User user,String username,Context context) throws Exception{
-        DatabaseIO dbIO = new DatabaseIO(context);
+    public boolean checkUsernameLocal(User user,String username) throws Exception{
+        DatabaseIO dbIO = new DatabaseIO(Workspace.get_instance().getCurrContext());
         Log log = new Log("Verify User Local","Read Log","Verified User of name: " + username);
         dbIO.insertLogData(log);
         boolean res = dbIO.checkUsername(username, user);
@@ -58,18 +57,15 @@ public class UserUtils implements IUserUtils {
     }
 
 
-    public User registerUser(String username, String password, User user) throws Exception {
+    public User registerUser(String username, String password) throws Exception {
         UserService userService = new UserService();
-        userService.registerUser(username,password,user);
+        userService.registerUser(username, password);
         return null;
     }
 
     @Override
     public User createUser(String firstName, String lastName, String andrewId, String department,
                            String emailId,String phoneNo) {
-        System.out.println(department);
-        System.out.println(phoneNo);
-
         Profile profile = new Profile();
         profile.setFirstName(firstName);
         profile.setLastName(lastName);
@@ -84,25 +80,22 @@ public class UserUtils implements IUserUtils {
     }
 
     @Override
-    public void registerUser(String username, String password, User user, Context context) throws Exception {
-//        UserService userService = new UserService();
-//        user.setIdentifier(userService.registerRemoteUser(username, password));
-        DatabaseIO dbIO = new DatabaseIO(context);
-        Log log = new Log("Register User","Insert Log","Saved User of name: " + username);
-        dbIO.insertLogData(log);
-        boolean res = dbIO.registerUser(username, password, user);
-        System.out.println("Registered User: " + res);
+    public void createDBUser(String username, String password) throws Exception {
+        if(!verifyUserLocal(username, password)) {
+            DatabaseIO dbIO = new DatabaseIO(Workspace.get_instance().getCurrContext());
+            Log log = new Log("Creating User", "Insert Log", "Saved User of name: " + username);
+            dbIO.insertLogData(log);
+            boolean res = dbIO.createDBUser(username, password);
+            System.out.println("Registered User: " + res);
+        }
     }
 
     @Override
-    public void registerProfile(User user,Profile profile,Context context) throws Exception {
-//        UserService userService = new UserService();
-//        user.getProfile().setIdentifier(userService.createProfile(user));
-        DatabaseIO dbIO = new DatabaseIO(context);
-        Log log = new Log("Register ProfileActivity","Insert Log","Saved ProfileActivity of name: " + profile.getFirstName()+", " + profile.getLastName()+".");
+    public void createDBProfile () throws Exception {
+        DatabaseIO dbIO = new DatabaseIO(Workspace.get_instance().getCurrContext());
+        Log log = new Log("Register ProfileActivity","Insert Log","Saved ProfileActivity of name: " + Workspace.get_instance().getCurrentUser().getProfile().getFirstName());
         dbIO.insertLogData(log);
-        dbIO.registerProfile(user,profile);
-        System.out.println("Registered ProfileActivity");
+        dbIO.createProfile();
     }
 
     @Override
@@ -118,7 +111,7 @@ public class UserUtils implements IUserUtils {
         DatabaseIO dbIO = new DatabaseIO(context);
         Log log = new Log("Getting userid","Read Log","Got Userid of name: " + email+".");
         dbIO.insertLogData(log);
-        dbIO.getUserId(email,user);
+        dbIO.getUserId(email, user);
     }
 
 }

@@ -1,15 +1,24 @@
 package com.jsphdev.utils;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.jsphdev.abstrct.Event;
 import com.jsphdev.abstrct.User;
 import com.jsphdev.adapter.ICalendarUtils;
 import com.jsphdev.database.DatabaseIO;
 import com.jsphdev.entities.model.Location;
+import com.jsphdev.entities.model.Workspace;
+import com.jsphdev.exception.InvalidInputException;
 import com.jsphdev.model.Log;
 
 /**
@@ -65,6 +74,16 @@ public class CalendarUtils implements ICalendarUtils {
         return dbIO.getEventByName(name);
     }
 
+    public Location getLocationObject(String eventLocation,LatLng position){
+        com.jsphdev.entities.model.Location location = new com.jsphdev.entities.model.Location();
+        location.setxCoordinate(position.latitude);
+        location.setyCoordinate(position.longitude);
+        location.setName(eventLocation);
+        return location;
+    }
+
+
+
     @Override
     public List<Event> getEventByLocation(Location location) {
         return null;
@@ -78,6 +97,36 @@ public class CalendarUtils implements ICalendarUtils {
         Log log = new Log("Search Event Log","Read Log","Searched Event by id: " + identifier);
         dbIO.insertLogData(log);
         return dbIO.getEventById(identifier);
+    }
+
+
+    public Date getBalDateObject (String dateTime) throws InvalidInputException {
+        Date date = null;
+        try{
+            DateFormat format = new SimpleDateFormat("dd/MM/yy,HH:mm", Locale.ENGLISH);
+            date = format.parse(dateTime);
+        }catch (java.text.ParseException e) {
+            e.printStackTrace();
+            throw new InvalidInputException("Invalid date input");
+        }
+        return date;
+    }
+
+    public Date getDateObject (String dateTime) throws InvalidInputException {
+        Date date = null;
+        try{
+            DateFormat format = new SimpleDateFormat("dd-MM-yy HH:mm:ss", Locale.ENGLISH);
+            date = format.parse(dateTime);
+        }catch (java.text.ParseException e) {
+            e.printStackTrace();
+            throw new InvalidInputException("Invalid date input");
+        }
+        return date;
+    }
+
+    public String getDateStrng (Date date){
+        DateFormat format = new SimpleDateFormat("dd/MM/yy,HH:mm", Locale.ENGLISH);
+        return format.format(date);
     }
 
 
